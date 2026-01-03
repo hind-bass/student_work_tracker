@@ -1,0 +1,184 @@
+{# templates/course/edit.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier {{ course.name }} - {{ parent() }}{% endblock %}
+
+{% block body %}
+    <div class="container py-4">
+        <div class="row justify-content-center">
+            <div class="col-lg-7">
+                {# En-tête #}
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div>
+                        <h1 class="h3 mb-1">
+                            <i class="bi bi-pencil-square me-2"></i> Modifier la matière
+                        </h1>
+                        <p class="text-muted mb-0">{{ course.name }}</p>
+                    </div>
+                    <div>
+                        <a href="{{ path('app_course_show', {id: course.id}) }}"
+                           class="btn btn-outline-info me-2">
+                            <i class="bi bi-eye me-1"></i> Voir
+                        </a>
+                        <a href="{{ path('app_course_index') }}"
+                           class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-left me-1"></i> Retour
+                        </a>
+                    </div>
+                </div>
+
+                {# Formulaire #}
+                <div class="card shadow-sm">
+                    <div class="card-body p-4">
+                        {{ form_start(form) }}
+
+                        {# Nom #}
+                        <div class="mb-4">
+                            {{ form_row(form.name) }}
+                        </div>
+
+                        {# Code #}
+                        <div class="mb-4">
+                            {{ form_row(form.code) }}
+                        </div>
+
+                        {# Professeur #}
+                        <div class="mb-4">
+                            {{ form_row(form.professor) }}
+                        </div>
+
+                        {# Couleur avec prévisualisation #}
+                        <div class="mb-4">
+                            {{ form_label(form.color) }}
+                            <div class="d-flex align-items-center gap-3">
+                                {{ form_widget(form.color, {
+                                    'attr': {
+                                        'class': 'form-control form-control-color',
+                                        'style': 'width: 80px; height: 50px; cursor: pointer;',
+                                        'id': 'colorPicker'
+                                    }
+                                }) }}
+                                <div class="flex-grow-1">
+                                    <div id="colorPreview"
+                                         class="rounded p-3 text-white text-center fw-bold"
+                                         style="background-color: {{ course.color }}">
+                                        Prévisualisation de la couleur
+                                    </div>
+                                </div>
+                            </div>
+                            {{ form_help(form.color) }}
+                            {{ form_errors(form.color) }}
+                        </div>
+
+                        {# Description #}
+                        {% if form.description is defined %}
+                            <div class="mb-4">
+                                {{ form_row(form.description) }}
+                            </div>
+                        {% endif %}
+
+                        {# Ligne : Crédits et Semestre #}
+                        <div class="row">
+                            {% if form.credits is defined %}
+                                <div class="col-md-6 mb-4">
+                                    {{ form_row(form.credits) }}
+                                </div>
+                            {% endif %}
+
+                            {% if form.semester is defined %}
+                                <div class="col-md-6 mb-4">
+                                    {{ form_row(form.semester) }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        {# Boutons #}
+                        <div class="d-flex justify-content-between align-items-center">
+                            <a href="{{ path('app_course_show', {id: course.id}) }}"
+                               class="btn btn-outline-secondary">
+                                <i class="bi bi-x-circle me-1"></i> Annuler
+                            </a>
+                            <button type="submit" class="btn btn-primary btn-lg px-5">
+                                <i class="bi bi-check-circle me-2"></i> Enregistrer
+                            </button>
+                        </div>
+
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+
+                {# Informations #}
+                <div class="card mt-3">
+                    <div class="card-body bg-light">
+                        <small class="text-muted">
+                            <i class="bi bi-info-circle me-1"></i>
+                            <strong>Travaux associés :</strong> {{ course.assignmentsCount }}
+                            <span class="ms-3">
+                            <i class="bi bi-clock-history me-1"></i>
+                            <strong>Créée le :</strong> {{ course.createdAt|date('d/m/Y') }}
+                        </span>
+                        </small>
+                    </div>
+                </div>
+
+                {# Suggestions de couleurs #}
+                <div class="card mt-3">
+                    <div class="card-body">
+                        <h6 class="mb-3">
+                            <i class="bi bi-palette me-2"></i> Changer rapidement la couleur
+                        </h6>
+                        <div class="d-flex gap-2 flex-wrap">
+                            <button type="button" class="btn btn-sm"
+                                    style="background-color: #0d6efd; width: 50px; height: 50px; border-radius: 8px;"
+                                    onclick="setColor('#0d6efd')" title="Bleu"></button>
+                            <button type="button" class="btn btn-sm"
+                                    style="background-color: #198754; width: 50px; height: 50px; border-radius: 8px;"
+                                    onclick="setColor('#198754')" title="Vert"></button>
+                            <button type="button" class="btn btn-sm"
+                                    style="background-color: #dc3545; width: 50px; height: 50px; border-radius: 8px;"
+                                    onclick="setColor('#dc3545')" title="Rouge"></button>
+                            <button type="button" class="btn btn-sm"
+                                    style="background-color: #ffc107; width: 50px; height: 50px; border-radius: 8px;"
+                                    onclick="setColor('#ffc107')" title="Jaune"></button>
+                            <button type="button" class="btn btn-sm"
+                                    style="background-color: #6f42c1; width: 50px; height: 50px; border-radius: 8px;"
+                                    onclick="setColor('#6f42c1')" title="Violet"></button>
+                            <button type="button" class="btn btn-sm"
+                                    style="background-color: #fd7e14; width: 50px; height: 50px; border-radius: 8px;"
+                                    onclick="setColor('#fd7e14')" title="Orange"></button>
+                            <button type="button" class="btn btn-sm"
+                                    style="background-color: #20c997; width: 50px; height: 50px; border-radius: 8px;"
+                                    onclick="setColor('#20c997')" title="Cyan"></button>
+                            <button type="button" class="btn btn-sm"
+                                    style="background-color: #d63384; width: 50px; height: 50px; border-radius: 8px;"
+                                    onclick="setColor('#d63384')" title="Rose"></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% block javascripts %}
+        {{ parent() }}
+        <script>
+            // Mise à jour de la prévisualisation en temps réel
+            const colorPicker = document.getElementById('colorPicker');
+            const colorPreview = document.getElementById('colorPreview');
+
+            if (colorPicker && colorPreview) {
+                colorPicker.addEventListener('input', function() {
+                    colorPreview.style.backgroundColor = this.value;
+                });
+            }
+
+            // Fonction pour définir une couleur prédéfinie
+            function setColor(color) {
+                if (colorPicker && colorPreview) {
+                    colorPicker.value = color;
+                    colorPreview.style.backgroundColor = color;
+                }
+            }
+        </script>
+    {% endblock %}
+{% endblock %}

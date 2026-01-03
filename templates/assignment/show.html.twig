@@ -1,0 +1,310 @@
+{# templates/assignment/show.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ assignment.title }} - {{ parent() }}{% endblock %}
+
+{% block body %}
+    <div class="container py-4">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                {# En-tête #}
+                <div class="d-flex justify-content-between align-items-start mb-4">
+                    <div class="flex-grow-1">
+                        <h1 class="h3 mb-3">{{ assignment.title }}</h1>
+                        <div class="d-flex gap-2 flex-wrap">
+                            {# Badge matière #}
+                            <span class="badge fs-6" style="background-color: {{ assignment.course.color }}">
+                            <i class="bi bi-book me-1"></i> {{ assignment.course.name }}
+                        </span>
+
+                            {# Badge statut #}
+                            <span class="badge {{ assignment.status.badgeClass }} fs-6">
+                            {{ assignment.status.icon }} {{ assignment.status.label }}
+                        </span>
+
+                            {# Badge priorité #}
+                            <span class="badge {{ assignment.priority.badgeClass }} fs-6">
+                            <i class="bi bi-flag-fill me-1"></i> {{ assignment.priority.label }}
+                        </span>
+                        </div>
+                    </div>
+
+                    {# Boutons d'action #}
+                    <div class="d-flex gap-2">
+                        <a href="{{ path('app_assignment_edit', {id: assignment.id}) }}"
+                           class="btn btn-primary">
+                            <i class="bi bi-pencil me-1"></i> Modifier
+                        </a>
+                        <a href="{{ path('app_assignment_index') }}"
+                           class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-left me-1"></i> Retour
+                        </a>
+                    </div>
+                </div>
+
+                {# Alerte en retard #}
+                {% if assignment.isOverdue %}
+                    <div class="alert alert-danger d-flex align-items-center mb-4">
+                        <i class="bi bi-exclamation-triangle-fill fs-4 me-3"></i>
+                        <div>
+                            <strong>Attention !</strong> Ce travail est en retard de
+                            <strong>{{ assignment.daysRemaining|abs }}</strong> jour(s).
+                        </div>
+                    </div>
+                {% endif %}
+
+                {# Carte principale #}
+                <div class="card shadow-sm mb-4">
+                    <div class="card-body p-4">
+                        <div class="row">
+                            {# Échéance #}
+                            <div class="col-md-4 mb-4">
+                                <h6 class="text-muted text-uppercase small mb-2">
+                                    <i class="bi bi-calendar-event me-1"></i> Échéance
+                                </h6>
+                                <p class="mb-1 fs-5 {{ assignment.urgencyClass }}">
+                                    <strong>{{ assignment.dueDate|date('d/m/Y') }}</strong>
+                                </p>
+                                <p class="mb-1">{{ assignment.dueDate|date('H:i') }}</p>
+                                <small class="{{ assignment.urgencyClass }}">
+                                    <i class="{{ assignment.urgencyIcon }} me-1"></i>
+                                    {% set days = assignment.daysRemaining %}
+                                    {% if days > 0 %}
+                                        Dans {{ days }} jour{{ days > 1 ? 's' : '' }}
+                                    {% elseif days == 0 %}
+                                        Aujourd'hui !
+                                    {% else %}
+                                        Retard de {{ days|abs }} jour{{ days|abs > 1 ? 's' : '' }}
+                                    {% endif %}
+                                </small>
+                            </div>
+
+                            {# Professeur #}
+                            <div class="col-md-4 mb-4">
+                                <h6 class="text-muted text-uppercase small mb-2">
+                                    <i class="bi bi-person me-1"></i> Professeur
+                                </h6>
+                                <p class="mb-1 fs-5">
+                                    {{ assignment.course.professor ?: 'Non renseigné' }}
+                                </p>
+                                <small class="text-muted">{{ assignment.course.code }}</small>
+                            </div>
+
+                            {# Progression #}
+                            <div class="col-md-4 mb-4">
+                                <h6 class="text-muted text-uppercase small mb-2">
+                                    <i class="bi bi-graph-up me-1"></i> Progression
+                                </h6>
+                                <div class="progress" style="height: 30px;">
+                                    <div class="progress-bar {{ assignment.progressBarClass }}"
+                                         role="progressbar"
+                                         style="width: {{ assignment.completionPercentage }}%">
+                                        <strong>{{ assignment.completionPercentage }}%</strong>
+                                    </div>
+                                </div>
+                                {% if assignment.completionPercentage == 100 %}
+                                    <small class="text-success">
+                                        <i class="bi bi-check-circle-fill me-1"></i> Terminé !
+                                    </small>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        {# Description #}
+                        <div class="mb-4">
+                            <h6 class="text-muted text-uppercase small mb-3">
+                                <i class="bi bi-file-text me-1"></i> Description
+                            </h6>
+                            {% if assignment.description %}
+                                <p class="mb-0" style="white-space: pre-line;">{{ assignment.description }}</p>
+                            {% else %}
+                                <p class="text-muted fst-italic mb-0">Aucune description</p>
+                            {% endif %}
+                        </div>
+
+                        {# Temps estimé vs réel #}
+                        {% if assignment.estimatedHours or assignment.actualHours %}
+                            <hr class="my-4">
+                            <div class="row mb-4">
+                                {% if assignment.estimatedHours %}
+                                    <div class="col-md-4">
+                                        <h6 class="text-muted text-uppercase small mb-2">
+                                            <i class="bi bi-clock me-1"></i> Temps estimé
+                                        </h6>
+                                        <p class="mb-0 fs-5">{{ assignment.estimatedHours }}h</p>
+                                    </div>
+                                {% endif %}
+
+                                {% if assignment.actualHours %}
+                                    <div class="col-md-4">
+                                        <h6 class="text-muted text-uppercase small mb-2">
+                                            <i class="bi bi-clock-fill me-1"></i> Temps réel
+                                        </h6>
+                                        <p class="mb-0 fs-5">{{ assignment.actualHours }}h</p>
+                                    </div>
+                                {% endif %}
+
+                                {% if assignment.timeDifference is not null %}
+                                    <div class="col-md-4">
+                                        <h6 class="text-muted text-uppercase small mb-2">
+                                            <i class="bi bi-speedometer me-1"></i> Écart
+                                        </h6>
+                                        {% if assignment.isOnSchedule %}
+                                            <p class="mb-0 fs-5 text-success">
+                                                <i class="bi bi-check-circle-fill"></i> Dans les temps
+                                            </p>
+                                        {% else %}
+                                            <p class="mb-0 fs-5 text-warning">
+                                                +{{ assignment.timeDifference }}h
+                                            </p>
+                                        {% endif %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        {% endif %}
+
+                        {# Notes #}
+                        {% if assignment.notes %}
+                            <hr class="my-4">
+                            <div class="mb-0">
+                                <h6 class="text-muted text-uppercase small mb-3">
+                                    <i class="bi bi-sticky me-1"></i> Notes personnelles
+                                </h6>
+                                <div class="bg-light p-3 rounded">
+                                    <p class="mb-0" style="white-space: pre-line;">{{ assignment.notes }}</p>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                {# Actions rapides #}
+                <div class="card shadow-sm mb-3">
+                    <div class="card-header bg-white">
+                        <h6 class="mb-0">
+                            <i class="bi bi-lightning-charge me-1"></i> Actions rapides
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex gap-2 flex-wrap">
+                            {# Boutons de changement de statut #}
+                            {% if assignment.status.value == 'todo' %}
+                                <button class="btn btn-primary" onclick="changeStatus('in_progress')">
+                                    <i class="bi bi-play-circle me-1"></i> Commencer
+                                </button>
+                            {% endif %}
+
+                            {% if assignment.status.value == 'in_progress' %}
+                                <button class="btn btn-success" onclick="changeStatus('completed')">
+                                    <i class="bi bi-check-circle me-1"></i> Marquer terminé
+                                </button>
+                            {% endif %}
+
+                            {% if assignment.status.value == 'completed' %}
+                                <button class="btn btn-secondary" onclick="changeStatus('todo')">
+                                    <i class="bi bi-arrow-counterclockwise me-1"></i> Rouvrir
+                                </button>
+                            {% endif %}
+
+                            {# Bouton supprimer #}
+                            <button type="button" class="btn btn-outline-danger ms-auto"
+                                    data-bs-toggle="modal" data-bs-target="#deleteModal">
+                                <i class="bi bi-trash me-1"></i> Supprimer
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                {# Métadonnées #}
+                <div class="card shadow-sm">
+                    <div class="card-body bg-light">
+                        <small class="text-muted">
+                            <i class="bi bi-info-circle me-1"></i>
+                            <strong>Créé le :</strong> {{ assignment.createdAt|date('d/m/Y à H:i') }}
+                            {% if assignment.updatedAt %}
+                                <span class="ms-3">
+                            <i class="bi bi-pencil me-1"></i>
+                            <strong>Modifié le :</strong> {{ assignment.updatedAt|date('d/m/Y à H:i') }}
+                        </span>
+                            {% endif %}
+                            {% if assignment.completedAt %}
+                                <span class="ms-3">
+                            <i class="bi bi-check-circle-fill me-1 text-success"></i>
+                            <strong>Terminé le :</strong> {{ assignment.completedAt|date('d/m/Y à H:i') }}
+                        </span>
+                            {% endif %}
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {# Modal de suppression #}
+    <div class="modal fade" id="deleteModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i> Confirmer la suppression
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Êtes-vous sûr de vouloir supprimer ce travail ?</p>
+                    <div class="alert alert-warning">
+                        <strong>{{ assignment.title }}</strong>
+                    </div>
+                    <p class="text-danger small mb-0">
+                        <i class="bi bi-info-circle me-1"></i> Cette action est irréversible.
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Annuler
+                    </button>
+                    <form method="post" action="{{ path('app_assignment_delete', {id: assignment.id}) }}" class="d-inline">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ assignment.id) }}">
+                        <button type="submit" class="btn btn-danger">
+                            <i class="bi bi-trash me-1"></i> Supprimer définitivement
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        // Fonction AJAX pour changer le statut
+        function changeStatus(newStatus) {
+            if (!confirm('Changer le statut de ce travail ?')) {
+                return;
+            }
+
+            fetch('{{ path('app_assignment_change_status', {id: assignment.id}) }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ status: newStatus })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        location.reload();
+                    } else {
+                        alert('Erreur lors du changement de statut');
+                    }
+                })
+                .catch(error => {
+                    console.error('Erreur:', error);
+                    alert('Erreur lors du changement de statut');
+                });
+        }
+    </script>
+{% endblock %}

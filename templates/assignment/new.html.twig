@@ -1,0 +1,110 @@
+{# templates/assignment/new.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouveau travail - {{ parent() }}{% endblock %}
+
+{% block body %}
+    <div class="container py-4">
+        <div class="row justify-content-center">
+            <div class="col-lg-9">
+                {# En-tête #}
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div>
+                        <h1 class="h3 mb-1">
+                            <i class="bi bi-plus-circle me-2"></i> Nouveau travail
+                        </h1>
+                        <p class="text-muted mb-0">Ajoutez un nouveau devoir ou projet</p>
+                    </div>
+                    <a href="{{ path('app_assignment_index') }}" class="btn btn-outline-secondary">
+                        <i class="bi bi-arrow-left me-1"></i> Retour
+                    </a>
+                </div>
+
+                {# Formulaire #}
+                <div class="card shadow-sm">
+                    <div class="card-body p-4">
+                        {{ form_start(form) }}
+
+                        {# Titre #}
+                        <div class="mb-4">
+                            {{ form_row(form.title) }}
+                        </div>
+
+                        {# Description #}
+                        <div class="mb-4">
+                            {{ form_row(form.description) }}
+                        </div>
+
+                        {# Ligne : Matière et Date d'échéance #}
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                {{ form_row(form.course) }}
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                {{ form_row(form.dueDate) }}
+                            </div>
+                        </div>
+
+                        {# Ligne : Priorité et Statut #}
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                {{ form_row(form.priority) }}
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                {{ form_row(form.status) }}
+                            </div>
+                        </div>
+
+                        {# Progression #}
+                        <div class="mb-4">
+                            <label class="form-label">
+                                {{ form_label(form.completionPercentage) }}
+                            </label>
+                            <div class="d-flex align-items-center gap-3">
+                                {{ form_widget(form.completionPercentage, {
+                                    'attr': {'class': 'form-range flex-grow-1'}
+                                }) }}
+                                <output class="badge bg-primary fs-6" style="min-width: 50px;">0%</output>
+                            </div>
+                            {{ form_help(form.completionPercentage) }}
+                            {{ form_errors(form.completionPercentage) }}
+                        </div>
+
+                        {# Ligne : Heures estimées et réelles #}
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                {{ form_row(form.estimatedHours) }}
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                {{ form_row(form.actualHours) }}
+                            </div>
+                        </div>
+
+                        {# Notes #}
+                        <div class="mb-4">
+                            {{ form_row(form.notes) }}
+                        </div>
+
+                        {# Boutons #}
+                        <div class="d-flex justify-content-between align-items-center">
+                            <a href="{{ path('app_assignment_index') }}" class="btn btn-outline-secondary">
+                                <i class="bi bi-x-circle me-1"></i> Annuler
+                            </a>
+                            <button type="submit" class="btn btn-primary btn-lg px-5">
+                                <i class="bi bi-check-circle me-2"></i> Créer le travail
+                            </button>
+                        </div>
+
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+
+                {# Aide #}
+                <div class="alert alert-info mt-3">
+                    <i class="bi bi-lightbulb-fill me-2"></i>
+                    <strong>Astuce :</strong> Définissez une date d'échéance réaliste et une priorité appropriée pour mieux organiser votre temps !
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

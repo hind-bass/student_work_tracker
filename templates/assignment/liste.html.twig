@@ -1,0 +1,38 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Liste des travaux{% endblock %}
+
+{% block content %}
+    <h2>Liste des travaux</h2>
+
+    <button onclick="location.href='{{ path('travaux_add') }}'">
+        Add a New Assignment
+    </button>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Titre</th>
+            <th>Description</th>
+            <th>Priority</th>
+            <th>Status</th>
+            <th>Notes</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for assignment in assignments %}
+            <tr>
+                <td>{{ assignment.titre }}</td>
+                <td>{{ assignment.description }}</td>
+                <td>{{ assignment.priority }}</td>
+                <td>{{ assignment.status }}</td>
+                <td>{{ assignment.notes }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">Aucun travail trouvé.</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

@@ -1,0 +1,185 @@
+{# templates/assignment/edit.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier {{ assignment.title }} - {{ parent() }}{% endblock %}
+
+{% block body %}
+    <div class="container py-4">
+        <div class="row justify-content-center">
+            <div class="col-lg-9">
+                {# En-tête #}
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div>
+                        <h1 class="h3 mb-1">
+                            <i class="bi bi-pencil-square me-2"></i> Modifier le travail
+                        </h1>
+                        <p class="text-muted mb-0">{{ assignment.title }}</p>
+                    </div>
+                    <div>
+                        <a href="{{ path('app_assignment_show', {id: assignment.id}) }}"
+                           class="btn btn-outline-info me-2">
+                            <i class="bi bi-eye me-1"></i> Voir
+                        </a>
+                        <a href="{{ path('app_assignment_index') }}"
+                           class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-left me-1"></i> Retour
+                        </a>
+                    </div>
+                </div>
+
+                {# Formulaire #}
+                <div class="card shadow-sm">
+                    <div class="card-body p-4">
+                        {{ form_start(form) }}
+
+                        {# Titre #}
+                        <div class="mb-4">
+                            {{ form_row(form.title) }}
+                        </div>
+
+                        {# Description #}
+                        <div class="mb-4">
+                            {{ form_row(form.description) }}
+                        </div>
+
+                        {# Ligne : Matière et Date d'échéance #}
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                {{ form_row(form.course) }}
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                {{ form_row(form.dueDate) }}
+                            </div>
+                        </div>
+
+                        {# Ligne : Priorité et Statut #}
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                {{ form_row(form.priority) }}
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                {{ form_row(form.status) }}
+                            </div>
+                        </div>
+
+                        {# Progression avec affichage en temps réel #}
+                        <div class="mb-4">
+                            <label class="form-label">
+                                {{ form_label(form.completionPercentage) }}
+                            </label>
+                            <div class="d-flex align-items-center gap-3">
+                                {{ form_widget(form.completionPercentage, {
+                                    'attr': {
+                                        'class': 'form-range flex-grow-1',
+                                        'id': 'progressRange'
+                                    }
+                                }) }}
+                                <output class="badge bg-primary fs-6" id="progressOutput" style="min-width: 50px;">
+                                    {{ assignment.completionPercentage }}%
+                                </output>
+                            </div>
+
+                            {# Barre visuelle #}
+                            <div class="progress mt-2" style="height: 25px;">
+                                <div class="progress-bar {{ assignment.progressBarClass }}"
+                                     id="progressBar"
+                                     role="progressbar"
+                                     style="width: {{ assignment.completionPercentage }}%">
+                                    {{ assignment.completionPercentage }}%
+                                </div>
+                            </div>
+                            {{ form_help(form.completionPercentage) }}
+                        </div>
+
+                        {# Ligne : Heures estimées et réelles #}
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                {{ form_row(form.estimatedHours) }}
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                {{ form_row(form.actualHours) }}
+                                {% if assignment.timeDifference is not null %}
+                                    <small class="text-muted">
+                                        {% if assignment.isOnSchedule %}
+                                            <i class="bi bi-check-circle text-success"></i> Dans les temps !
+                                        {% else %}
+                                            <i class="bi bi-exclamation-circle text-warning"></i>
+                                            Dépassement de {{ assignment.timeDifference }}h
+                                        {% endif %}
+                                    </small>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        {# Notes #}
+                        <div class="mb-4">
+                            {{ form_row(form.notes) }}
+                        </div>
+
+                        {# Boutons #}
+                        <div class="d-flex justify-content-between align-items-center">
+                            <a href="{{ path('app_assignment_show', {id: assignment.id}) }}"
+                               class="btn btn-outline-secondary">
+                                <i class="bi bi-x-circle me-1"></i> Annuler
+                            </a>
+                            <button type="submit" class="btn btn-primary btn-lg px-5">
+                                <i class="bi bi-check-circle me-2"></i> Enregistrer les modifications
+                            </button>
+                        </div>
+
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+
+                {# Métadonnées #}
+                <div class="card mt-3">
+                    <div class="card-body bg-light">
+                        <small class="text-muted">
+                            <i class="bi bi-clock-history me-1"></i>
+                            <strong>Créé le :</strong> {{ assignment.createdAt|date('d/m/Y à H:i') }}
+                            {% if assignment.updatedAt %}
+                                <span class="ms-3">
+                            <i class="bi bi-pencil me-1"></i>
+                            <strong>Modifié le :</strong> {{ assignment.updatedAt|date('d/m/Y à H:i') }}
+                        </span>
+                            {% endif %}
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% block javascripts %}
+        {{ parent() }}
+        <script>
+            // Mise à jour en temps réel de la progression
+            const range = document.getElementById('progressRange');
+            const output = document.getElementById('progressOutput');
+            const progressBar = document.getElementById('progressBar');
+
+            if (range && output && progressBar) {
+                range.addEventListener('input', function() {
+                    const value = this.value;
+                    output.textContent = value + '%';
+                    progressBar.style.width = value + '%';
+                    progressBar.textContent = value + '%';
+
+                    // Changer la couleur selon le pourcentage
+                    progressBar.className = 'progress-bar';
+                    if (value == 0) {
+                        progressBar.classList.add('bg-secondary');
+                    } else if (value < 30) {
+                        progressBar.classList.add('bg-danger');
+                    } else if (value < 70) {
+                        progressBar.classList.add('bg-warning');
+                    } else if (value < 100) {
+                        progressBar.classList.add('bg-info');
+                    } else {
+                        progressBar.classList.add('bg-success');
+                    }
+                });
+            }
+        </script>
+    {% endblock %}
+{% endblock %}

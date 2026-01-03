@@ -1,0 +1,326 @@
+{# templates/dashboard/index.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Tableau de bord - {{ parent() }}{% endblock %}
+
+{% block body %}
+    <div class="container-fluid px-4 py-4">
+        {# En-tête #}
+        <div class="row mb-4">
+            <div class="col-lg-8">
+                <h1 class="h2 mb-2">
+                    <i class="bi bi-speedometer2 me-2"></i> Tableau de bord
+                </h1>
+                <p class="text-muted mb-0">
+                    Bienvenue, <strong>{{ app.user.firstName }}</strong> !
+                    Voici un aperçu de vos travaux.
+                </p>
+            </div>
+            <div class="col-lg-4 text-lg-end mt-3 mt-lg-0">
+                <a href="{{ path('app_assignment_new') }}" class="btn btn-primary btn-lg">
+                    <i class="bi bi-plus-circle me-2"></i> Nouveau travail
+                </a>
+            </div>
+        </div>
+
+        {# Alertes travaux en retard #}
+        {% if stats.overdue_count > 0 %}
+            <div class="alert alert-danger alert-permanent d-flex align-items-center mb-4" role="alert">
+                <i class="bi bi-exclamation-triangle-fill fs-4 me-3"></i>
+                <div class="flex-grow-1">
+                    <strong>Attention !</strong> Vous avez <strong>{{ stats.overdue_count }}</strong> travail(x) en retard.
+                </div>
+                <a href="{{ path('app_assignment_index') }}" class="btn btn-sm btn-light">
+                    Voir les travaux
+                </a>
+            </div>
+        {% endif %}
+
+        {# Statistiques principales #}
+        <div class="row g-4 mb-4">
+            {# À faire #}
+            <div class="col-md-4">
+                <div class="card stat-card todo h-100">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <h6 class="text-muted text-uppercase small mb-2">À faire</h6>
+                            <h2 class="mb-0 fw-bold">{{ stats.todo }}</h2>
+                            <small class="text-muted">travaux en attente</small>
+                        </div>
+                        <div class="fs-1 text-secondary opacity-50">
+                            <i class="bi bi-clipboard"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {# En cours #}
+            <div class="col-md-4">
+                <div class="card stat-card in-progress h-100">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <h6 class="text-muted text-uppercase small mb-2">En cours</h6>
+                            <h2 class="mb-0 fw-bold text-primary">{{ stats.in_progress }}</h2>
+                            <small class="text-muted">travaux actifs</small>
+                        </div>
+                        <div class="fs-1 text-primary opacity-50">
+                            <i class="bi bi-hourglass-split"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {# Terminés #}
+            <div class="col-md-4">
+                <div class="card stat-card completed h-100">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <h6 class="text-muted text-uppercase small mb-2">Terminés</h6>
+                            <h2 class="mb-0 fw-bold text-success">{{ stats.completed }}</h2>
+                            <small class="text-muted">travaux complétés</small>
+                        </div>
+                        <div class="fs-1 text-success opacity-50">
+                            <i class="bi bi-check-circle"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {# Progression globale #}
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body p-4">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5 class="card-title mb-0">
+                                <i class="bi bi-graph-up me-2"></i> Progression globale
+                            </h5>
+                            <span class="badge bg-primary fs-6">
+                            {{ stats.progress_percentage }}%
+                        </span>
+                        </div>
+
+                        <div class="progress" style="height: 35px;">
+                            <div class="progress-bar bg-gradient"
+                                 role="progressbar"
+                                 style="width: {{ stats.progress_percentage }}%;
+                                     background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);"
+                                 aria-valuenow="{{ stats.progress_percentage }}"
+                                 aria-valuemin="0"
+                                 aria-valuemax="100">
+                                <span class="fw-bold">{{ stats.progress_percentage }}%</span>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-2 small text-muted">
+                            <span><i class="bi bi-check-circle-fill text-success me-1"></i> {{ stats.completed }} terminés</span>
+                            <span><i class="bi bi-bar-chart-fill me-1"></i> {{ stats.total }} au total</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            {# Prochaines échéances #}
+            <div class="col-lg-6">
+                <div class="card h-100">
+                    <div class="card-header bg-white d-flex justify-content-between align-items-center py-3">
+                        <h5 class="mb-0">
+                            <i class="bi bi-alarm text-danger me-2"></i> Prochaines échéances
+                        </h5>
+                        <a href="{{ path('app_assignment_index') }}" class="btn btn-sm btn-outline-primary">
+                            <i class="bi bi-eye me-1"></i> Tout voir
+                        </a>
+                    </div>
+                    <div class="card-body p-0">
+                        {% if stats.upcoming_assignments is empty %}
+                            <div class="text-center py-5">
+                                <i class="bi bi-check-circle text-success" style="font-size: 4rem;"></i>
+                                <p class="text-muted mt-3 mb-0">Aucun travail urgent ! 🎉</p>
+                                <small class="text-muted">Profitez de ce moment de répit</small>
+                            </div>
+                        {% else %}
+                            <div class="list-group list-group-flush">
+                                {% for assignment in stats.upcoming_assignments %}
+                                    <div class="list-group-item assignment-card py-3">
+                                        <div class="priority-indicator" style="background-color: {{ assignment.priority.color }}"></div>
+                                        <div class="d-flex w-100 justify-content-between align-items-start">
+                                            <div class="flex-grow-1">
+                                                <h6 class="mb-2 fw-semibold">{{ assignment.title }}</h6>
+                                                <div class="mb-2">
+                                            <span class="badge me-1" style="background-color: {{ assignment.course.color }}">
+                                                {{ assignment.course.name }}
+                                            </span>
+                                                    <span class="badge {{ assignment.status.badgeClass }}">
+                                                {{ assignment.status.icon }} {{ assignment.status.label }}
+                                            </span>
+                                                    <span class="badge {{ assignment.priority.badgeClass }}">
+                                                <i class="bi bi-flag-fill"></i> {{ assignment.priority.label }}
+                                            </span>
+                                                </div>
+                                                <small class="{{ assignment.urgencyClass }}">
+                                                    <i class="{{ assignment.urgencyIcon }} me-1"></i>
+                                                    <strong>{{ assignment.dueDate|date('d/m/Y à H:i') }}</strong>
+                                                    {% set days = assignment.daysRemaining %}
+                                                    {% if days > 0 %}
+                                                        (dans {{ days }} jour{{ days > 1 ? 's' : '' }})
+                                                    {% elseif days == 0 %}
+                                                        (aujourd'hui !)
+                                                    {% else %}
+                                                        (en retard de {{ days|abs }} jour{{ days|abs > 1 ? 's' : '' }})
+                                                    {% endif %}
+                                                </small>
+
+                                                {# Barre de progression #}
+                                                {% if assignment.completionPercentage > 0 %}
+                                                    <div class="progress mt-2" style="height: 6px;">
+                                                        <div class="progress-bar {{ assignment.progressBarClass }}"
+                                                             style="width: {{ assignment.completionPercentage }}%"></div>
+                                                    </div>
+                                                {% endif %}
+                                            </div>
+                                            <a href="{{ path('app_assignment_show', {id: assignment.id}) }}"
+                                               class="btn btn-sm btn-outline-info ms-3">
+                                                <i class="bi bi-eye"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            {# Répartition par matière avec graphique #}
+            <div class="col-lg-6">
+                <div class="card h-100">
+                    <div class="card-header bg-white py-3">
+                        <h5 class="mb-0">
+                            <i class="bi bi-pie-chart text-primary me-2"></i> Répartition par matière
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        {% if stats.assignments_by_course is empty %}
+                            <div class="text-center py-5">
+                                <i class="bi bi-journal-x text-muted" style="font-size: 4rem;"></i>
+                                <p class="text-muted mt-3 mb-3">Aucune matière créée</p>
+                                <a href="{{ path('app_course_new') }}" class="btn btn-primary">
+                                    <i class="bi bi-plus-circle me-2"></i> Créer une matière
+                                </a>
+                            </div>
+                        {% else %}
+                            <canvas id="courseChart" style="max-height: 300px;"></canvas>
+
+                            {# Légende personnalisée #}
+                            <div class="mt-4">
+                                <h6 class="small text-muted text-uppercase mb-3">Détails par matière</h6>
+                                {% for item in stats.assignments_by_course %}
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <span class="small">{{ item.courseName }}</span>
+                                        <span class="badge bg-secondary">{{ item.count }} travaux</span>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {# Statistiques supplémentaires #}
+        <div class="row g-4 mt-2">
+            <div class="col-md-3">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <i class="bi bi-book text-primary fs-1 mb-2"></i>
+                        <h3 class="mb-0">{{ stats.total_courses }}</h3>
+                        <small class="text-muted">Matières</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <i class="bi bi-list-task text-info fs-1 mb-2"></i>
+                        <h3 class="mb-0">{{ stats.total }}</h3>
+                        <small class="text-muted">Total travaux</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <i class="bi bi-percent text-success fs-1 mb-2"></i>
+                        <h3 class="mb-0">{{ stats.progress_percentage }}%</h3>
+                        <small class="text-muted">Complétion</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center">
+                    <div class="card-body">
+                        {% if stats.overdue_count > 0 %}
+                            <i class="bi bi-exclamation-triangle text-danger fs-1 mb-2"></i>
+                            <h3 class="mb-0 text-danger">{{ stats.overdue_count }}</h3>
+                        {% else %}
+                            <i class="bi bi-check-circle text-success fs-1 mb-2"></i>
+                            <h3 class="mb-0 text-success">0</h3>
+                        {% endif %}
+                        <small class="text-muted">En retard</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% if stats.assignments_by_course is not empty %}
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const ctx = document.getElementById('courseChart');
+                if (ctx) {
+                    new Chart(ctx, {
+                        type: 'doughnut',
+                        data: {
+                            labels: {{ chart_data.labels|json_encode|raw }},
+                            datasets: [{
+                                data: {{ chart_data.data|json_encode|raw }},
+                                backgroundColor: [
+                                    '#667eea', '#764ba2', '#f093fb', '#4facfe',
+                                    '#43e97b', '#fa709a', '#fee140', '#30cfd0',
+                                    '#a8edea', '#fed6e3'
+                                ],
+                                borderWidth: 0
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: true,
+                            plugins: {
+                                legend: {
+                                    display: false
+                                },
+                                tooltip: {
+                                    backgroundColor: 'rgba(0,0,0,0.8)',
+                                    padding: 12,
+                                    titleFont: {
+                                        size: 14
+                                    },
+                                    bodyFont: {
+                                        size: 13
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+            });
+        </script>
+    {% endif %}
+{% endblock %}

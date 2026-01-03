@@ -1,0 +1,92 @@
+{# templates/course/index.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes matières - {{ parent() }}{% endblock %}
+
+{% block body %}
+    <div class="container py-4">
+        {# En-tête #}
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h1 class="h3 mb-1">
+                    <i class="bi bi-book"></i> Mes matières
+                </h1>
+                <p class="text-muted mb-0">Gérez vos cours et leurs informations</p>
+            </div>
+            <a href="{{ path('app_course_new') }}" class="btn btn-primary">
+                <i class="bi bi-plus-circle"></i> Nouvelle matière
+            </a>
+        </div>
+
+        {% if courses is empty %}
+            {# État vide #}
+            <div class="text-center py-5">
+                <i class="bi bi-journal-x display-1 text-muted d-block mb-3"></i>
+                <h3 class="text-muted">Aucune matière</h3>
+                <p class="text-muted">Commencez par créer votre première matière pour organiser vos travaux</p>
+                <a href="{{ path('app_course_new') }}" class="btn btn-primary btn-lg mt-3">
+                    <i class="bi bi-plus-circle"></i> Créer ma première matière
+                </a>
+            </div>
+        {% else %}
+            {# Grille de cartes #}
+            <div class="row g-4">
+                {% for course in courses %}
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card h-100 shadow-sm">
+                            {# Barre de couleur en haut #}
+                            <div class="card-header" style="background-color: {{ course.color }}; height: 10px; border: none;"></div>
+
+                            <div class="card-body">
+                                {# Nom et code #}
+                                <h5 class="card-title mb-2">{{ course.name }}</h5>
+                                <p class="text-muted small mb-3">
+                                    <i class="bi bi-tag"></i> {{ course.code }}
+                                </p>
+
+                                {# Professeur #}
+                                {% if course.professor %}
+                                    <p class="mb-3">
+                                        <i class="bi bi-person"></i>
+                                        <small>{{ course.professor }}</small>
+                                    </p>
+                                {% endif %}
+
+                                {# Statistiques #}
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                            <span class="badge bg-secondary">
+                                {{ course.assignmentsCount }} travaux
+                            </span>
+                                    <small class="text-muted">
+                                        <i class="bi bi-calendar"></i>
+                                        {{ course.createdAt|date('d/m/Y') }}
+                                    </small>
+                                </div>
+
+                                <hr>
+
+                                {# Actions #}
+                                <div class="d-flex gap-2">
+                                    <a href="{{ path('app_course_show', {id: course.id}) }}"
+                                       class="btn btn-sm btn-outline-info flex-fill">
+                                        <i class="bi bi-eye"></i> Voir
+                                    </a>
+                                    <a href="{{ path('app_course_edit', {id: course.id}) }}"
+                                       class="btn btn-sm btn-outline-primary flex-fill">
+                                        <i class="bi bi-pencil"></i> Modifier
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+            {# Statistique globale #}
+            <div class="alert alert-info mt-4">
+                <i class="bi bi-info-circle"></i>
+                Vous avez <strong>{{ courses|length }}</strong> matière(s) enregistrée(s).
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
