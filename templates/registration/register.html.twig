@@ -1,160 +1,244 @@
 {# templates/registration/register.html.twig #}
-{% extends 'base.html.twig' %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscription - Gestionnaire Universitaire</title>
 
-{% block title %}Inscription - {{ parent() }}{% endblock %}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
 
-{% block body %}
-    <div class="container">
-        <div class="row justify-content-center" style="margin-top: 3rem;">
-            <div class="col-md-7 col-lg-6">
-                {# Card d'inscription #}
-                <div class="card shadow-lg border-0">
-                    <div class="card-body p-5">
-                        {# En-tête #}
-                        <div class="text-center mb-4">
-                            <div class="mb-3">
-                                <i class="bi bi-person-plus-fill text-primary" style="font-size: 3rem;"></i>
-                            </div>
-                            <h1 class="h3 mb-2 fw-bold">Créer un compte</h1>
-                            <p class="text-muted mb-0">Rejoignez-nous pour organiser vos travaux</p>
-                        </div>
+    <style>
+        :root {
+            --primary: #865749;
+            --accent: #C0876A;
+            --dark: #473D43;
+            --darker: #2D2326;
+            --slate: #958377;
+            --beige: #A76048;
+        }
 
-                        {# Formulaire d'inscription #}
-                        {{ form_start(registrationForm) }}
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--slate) 0%, var(--darker) 100%);
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+            margin: 0;
+            overflow-y: auto;
+        }
 
-                        {# Nom et Prénom sur la même ligne #}
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                {{ form_row(registrationForm.firstName, {
-                                    'attr': {
-                                        'class': 'form-control form-control-lg',
-                                        'placeholder': 'Ex: Jean'
-                                    }
-                                }) }}
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                {{ form_row(registrationForm.lastName, {
-                                    'attr': {
-                                        'class': 'form-control form-control-lg',
-                                        'placeholder': 'Ex: DUPONT'
-                                    }
-                                }) }}
-                            </div>
-                        </div>
+        .register-container {
+            width: 100%;
+            max-width: 1100px;
+            background: rgba(45, 35, 38, 0.85);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(192, 135, 106, 0.2);
+            border-radius: 30px;
+            overflow: hidden;
+            display: flex;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+            animation: fadeIn 0.8s ease;
+        }
 
-                        {# Email #}
-                        <div class="mb-3">
-                            {{ form_row(registrationForm.email, {
-                                'attr': {
-                                    'class': 'form-control form-control-lg',
-                                    'placeholder': 'votre.email@universite.fr'
-                                }
-                            }) }}
-                        </div>
+        .form-side {
+            flex: 1.2;
+            padding: 3rem;
+            color: #fff;
+        }
 
-                        {# Mot de passe #}
-                        <div class="mb-3">
-                            {{ form_row(registrationForm.password.first, {
-                                'attr': {
-                                    'class': 'form-control form-control-lg',
-                                    'placeholder': '••••••••'
-                                }
-                            }) }}
-                        </div>
+        .info-side {
+            flex: 0.8;
+            background: linear-gradient(135deg, var(--primary), var(--darker));
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            color: #fff;
+        }
 
-                        {# Confirmation mot de passe #}
-                        <div class="mb-4">
-                            {{ form_row(registrationForm.password.second, {
-                                'attr': {
-                                    'class': 'form-control form-control-lg',
-                                    'placeholder': '••••••••'
-                                }
-                            }) }}
-                        </div>
+        .page-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #fff, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
 
-                        {# Exigences du mot de passe #}
-                        <div class="alert alert-info d-flex align-items-start mb-4">
-                            <i class="bi bi-info-circle-fill me-2 mt-1"></i>
-                            <div>
-                                <strong>Exigences du mot de passe :</strong>
-                                <ul class="mb-0 mt-2 small">
-                                    <li>Minimum 8 caractères</li>
-                                    <li>Au moins une lettre majuscule</li>
-                                    <li>Au moins une lettre minuscule</li>
-                                    <li>Au moins un chiffre</li>
-                                </ul>
-                            </div>
-                        </div>
+        .form-label {
+            color: var(--beige);
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 1rem;
+        }
 
-                        {# Bouton d'inscription #}
-                        <button type="submit" class="btn btn-primary btn-lg w-100 mb-3">
-                            <i class="bi bi-person-check me-2"></i> S'inscrire
-                        </button>
+        .form-control {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(192, 135, 106, 0.2);
+            border-radius: 12px;
+            padding: 0.75rem 1rem;
+            color: #fff;
+            transition: all 0.3s ease;
+        }
 
-                        {# Séparateur #}
-                        <div class="text-center my-4">
-                            <div class="d-flex align-items-center">
-                                <hr class="flex-grow-1">
-                                <span class="px-3 text-muted small">OU</span>
-                                <hr class="flex-grow-1">
-                            </div>
-                        </div>
+        .form-control:focus {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px rgba(192, 135, 106, 0.1);
+            color: #fff;
+        }
 
-                        {# Lien de connexion #}
-                        <div class="text-center">
-                            <p class="text-muted mb-2">Vous avez déjà un compte ?</p>
-                            <a href="{{ path('app_login') }}" class="btn btn-outline-secondary w-100">
-                                <i class="bi bi-box-arrow-in-right me-2"></i> Se connecter
-                            </a>
-                        </div>
+        .btn-register {
+            width: 100%;
+            background: linear-gradient(135deg, var(--accent), var(--beige));
+            border: none;
+            padding: 1rem;
+            border-radius: 15px;
+            color: white;
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-top: 2rem;
+            transition: all 0.3s ease;
+        }
 
-                        {{ form_end(registrationForm) }}
-                    </div>
+        .btn-register:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(192, 135, 106, 0.3);
+        }
+
+        .benefit-item {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .benefit-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent);
+            font-size: 1.5rem;
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: rgba(255,255,255,0.6);
+        }
+
+        .login-link a {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 992px) {
+            .register-container { flex-direction: column; }
+            .info-side { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="register-container">
+    <div class="form-side">
+        <h1 class="page-title">Créer un compte</h1>
+        <p class="text-white-50 mb-4">Rejoignez-nous pour mieux gérer vos études.</p>
+
+        {{ form_start(registrationForm) }}
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="form-label">Prénom</label>
+                    {{ form_widget(registrationForm.firstName) }}
+                    <div class="text-danger small">{{ form_errors(registrationForm.firstName) }}</div>
                 </div>
-
-                {# Info supplémentaire #}
-                <div class="text-center mt-4">
-                    <p class="text-muted small">
-                        <i class="bi bi-shield-check me-1"></i> En créant un compte, vous acceptez nos conditions d'utilisation
-                    </p>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="form-label">Nom</label>
+                    {{ form_widget(registrationForm.lastName) }}
+                    <div class="text-danger small">{{ form_errors(registrationForm.lastName) }}</div>
                 </div>
             </div>
         </div>
+
+        <div class="form-group">
+            <label class="form-label">Adresse Email</label>
+            {{ form_widget(registrationForm.email) }}
+            <div class="text-danger small">{{ form_errors(registrationForm.email) }}</div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="form-label">Mot de passe</label>
+                    {# Correction ici : password au lieu de plainPassword #}
+                    {{ form_widget(registrationForm.password.first) }}
+                    <div class="text-danger small">{{ form_errors(registrationForm.password.first) }}</div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="form-label">Confirmation</label>
+                    {# Correction ici : password au lieu de plainPassword #}
+                    {{ form_widget(registrationForm.password.second) }}
+                    <div class="text-danger small">{{ form_errors(registrationForm.password.second) }}</div>
+                </div>
+            </div>
+
+        </div>
+
+        <button type="submit" class="btn-register">
+            <i class="bi bi-person-plus-fill me-2"></i>S'inscrire gratuitement
+        </button>
+        {{ form_end(registrationForm) }}
+
+        <div class="login-link">
+            Déjà un compte ? <a href="{{ path('app_login') }}">Connectez-vous</a>
+        </div>
     </div>
 
-    {# Style personnalisé #}
-    {% block stylesheets %}
-        {{ parent() }}
-        <style>
-            body {
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            }
+    <div class="info-side">
+        <div class="benefit-item">
+            <div class="benefit-icon"><i class="bi bi-lightning-charge"></i></div>
+            <div>
+                <h5 class="mb-1">Rapide & Efficace</h5>
+                <p class="small text-white-50 mb-0">Organisez vos travaux en quelques clics seulement.</p>
+            </div>
+        </div>
+        <div class="benefit-item">
+            <div class="benefit-icon"><i class="bi bi-graph-up-arrow"></i></div>
+            <div>
+                <h5 class="mb-1">Suivez vos progrès</h5>
+                <p class="small text-white-50 mb-0">Visualisez vos performances avec nos statistiques.</p>
+            </div>
+        </div>
+        <div class="benefit-item">
+            <div class="benefit-icon"><i class="bi bi-shield-check"></i></div>
+            <div>
+                <h5 class="mb-1">Sécurité maximale</h5>
+                <p class="small text-white-50 mb-0">Vos données personnelles sont protégées et cryptées.</p>
+            </div>
+        </div>
+    </div>
+</div>
 
-            .card {
-                border-radius: 20px !important;
-            }
-
-            .form-control:focus {
-                border-color: #667eea;
-                box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
-            }
-
-            .btn-primary {
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                border: none;
-            }
-
-            .btn-primary:hover {
-                background: linear-gradient(135deg, #5568d3 0%, #6941a5 100%);
-                transform: translateY(-2px);
-                box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
-            }
-
-            .alert-info {
-                background-color: #e7f3ff;
-                border-color: #b3d9ff;
-                color: #004085;
-            }
-        </style>
-    {% endblock %}
-{% endblock %}
+</body>
+</html>

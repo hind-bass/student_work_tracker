@@ -1,142 +1,235 @@
 {# templates/security/login.html.twig #}
-{% extends 'base.html.twig' %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion - Gestionnaire Universitaire</title>
 
-{% block title %}Connexion - {{ parent() }}{% endblock %}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
 
-{% block body %}
-    <div class="container">
-        <div class="row justify-content-center" style="margin-top: 5rem;">
-            <div class="col-md-5 col-lg-4">
-                {# Card de connexion #}
-                <div class="card shadow-lg border-0">
-                    <div class="card-body p-5">
-                        {# En-tête #}
-                        <div class="text-center mb-4">
-                            <div class="mb-3">
-                                <i class="bi bi-journal-bookmark-fill text-primary" style="font-size: 3rem;"></i>
-                            </div>
-                            <h1 class="h3 mb-2 fw-bold">Bienvenue !</h1>
-                            <p class="text-muted mb-0">Connectez-vous à votre compte</p>
-                        </div>
+    <style>
+        :root {
+            --primary: #865749;
+            --accent: #C0876A;
+            --dark: #473D43;
+            --darker: #2D2326;
+            --slate: #958377;
+            --beige: #A76048;
+        }
 
-                        {# Message d'erreur #}
-                        {% if error %}
-                            <div class="alert alert-danger d-flex align-items-center" role="alert">
-                                <i class="bi bi-exclamation-triangle-fill me-2"></i>
-                                <div>
-                                    {{ error.messageKey|trans(error.messageData, 'security') }}
-                                </div>
-                            </div>
-                        {% endif %}
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--slate) 0%, var(--darker) 100%);
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+            margin: 0;
+        }
 
-                        {# Formulaire de connexion #}
-                        <form method="post">
-                            {# Email #}
-                            <div class="mb-3">
-                                <label for="inputEmail" class="form-label fw-semibold">
-                                    <i class="bi bi-envelope me-1"></i> Email
-                                </label>
-                                <input type="email"
-                                       value="{{ last_username }}"
-                                       name="_username"
-                                       id="inputEmail"
-                                       class="form-control form-control-lg"
-                                       autocomplete="email"
-                                       required
-                                       autofocus
-                                       placeholder="votre.email@exemple.com">
-                            </div>
+        .login-container {
+            width: 100%;
+            max-width: 1000px;
+            background: rgba(45, 35, 38, 0.85);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(192, 135, 106, 0.2);
+            border-radius: 30px;
+            overflow: hidden;
+            display: flex;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+            animation: fadeIn 0.8s ease;
+        }
 
-                            {# Mot de passe #}
-                            <div class="mb-3">
-                                <label for="inputPassword" class="form-label fw-semibold">
-                                    <i class="bi bi-lock me-1"></i> Mot de passe
-                                </label>
-                                <input type="password"
-                                       name="_password"
-                                       id="inputPassword"
-                                       class="form-control form-control-lg"
-                                       autocomplete="current-password"
-                                       required
-                                       placeholder="••••••••">
-                            </div>
+        .form-side {
+            flex: 1;
+            padding: 3.5rem;
+            color: #fff;
+        }
 
-                            {# Se souvenir de moi #}
-                            <div class="mb-3 form-check">
-                                <input type="checkbox"
-                                       class="form-check-input"
-                                       id="remember_me"
-                                       name="_remember_me">
-                                <label class="form-check-label" for="remember_me">
-                                    Se souvenir de moi
-                                </label>
-                            </div>
+        .info-side {
+            flex: 0.8;
+            background: linear-gradient(135deg, var(--primary), var(--darker));
+            padding: 3.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            color: #fff;
+        }
 
-                            {# Token CSRF #}
-                            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #fff, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
 
-                            {# Bouton de connexion #}
-                            <button class="btn btn-primary btn-lg w-100 mb-3" type="submit">
-                                <i class="bi bi-box-arrow-in-right me-2"></i> Se connecter
-                            </button>
+        .form-label {
+            color: var(--beige);
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 1.5rem;
+            display: block;
+        }
 
-                            {# Séparateur #}
-                            <div class="text-center my-4">
-                                <div class="d-flex align-items-center">
-                                    <hr class="flex-grow-1">
-                                    <span class="px-3 text-muted small">OU</span>
-                                    <hr class="flex-grow-1">
-                                </div>
-                            </div>
+        .form-control {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(192, 135, 106, 0.2);
+            border-radius: 12px;
+            padding: 0.8rem 1rem;
+            color: #fff;
+            transition: all 0.3s ease;
+        }
 
-                            {# Lien d'inscription #}
-                            <div class="text-center">
-                                <p class="text-muted mb-2">Pas encore de compte ?</p>
-                                <a href="{{ path('app_register') }}" class="btn btn-outline-primary w-100">
-                                    <i class="bi bi-person-plus me-2"></i> Créer un compte
-                                </a>
-                            </div>
-                        </form>
-                    </div>
+        .form-control:focus {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px rgba(192, 135, 106, 0.1);
+            color: #fff;
+            outline: none;
+        }
+
+        .btn-login {
+            width: 100%;
+            background: linear-gradient(135deg, var(--accent), var(--beige));
+            border: none;
+            padding: 1rem;
+            border-radius: 15px;
+            color: white;
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-top: 2rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .btn-login:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(192, 135, 106, 0.3);
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+            margin-bottom: 2rem;
+        }
+
+        .feature-icon {
+            width: 45px;
+            height: 45px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent);
+            font-size: 1.3rem;
+        }
+
+        .register-link {
+            text-align: center;
+            margin-top: 2rem;
+            color: rgba(255,255,255,0.6);
+        }
+
+        .register-link a {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .form-check-input:checked {
+            background-color: var(--accent);
+            border-color: var(--accent);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 850px) {
+            .login-container { flex-direction: column; }
+            .info-side { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="login-container">
+    <div class="form-side">
+        <form method="post">
+            {% if error %}
+                <div class="alert alert-danger border-0 mb-4" style="background: rgba(220, 53, 69, 0.2); color: #ff8787; border-radius: 12px;">
+                    {{ error.messageKey|trans(error.messageData, 'security') }}
                 </div>
+            {% endif %}
 
-                {# Info supplémentaire #}
-                <div class="text-center mt-4">
-                    <p class="text-muted small mb-0">
-                        <i class="bi bi-shield-check me-1"></i> Vos données sont sécurisées
-                    </p>
+            <h1 class="page-title">Bon retour !</h1>
+            <p class="text-white-50 mb-4">Connectez-vous pour accéder à vos travaux.</p>
+
+            <div class="form-group">
+                <label for="inputEmail" class="form-label">Adresse Email</label>
+                <input type="email" value="{{ last_username }}" name="_username" id="inputEmail" class="form-control" autocomplete="email" required autofocus placeholder="nom@exemple.com">
+            </div>
+
+            <div class="form-group">
+                <label for="inputPassword" class="form-label">Mot de passe</label>
+                <input type="password" name="_password" id="inputPassword" class="form-control" autocomplete="current-password" required placeholder="••••••••">
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center mt-4">
+                <div class="form-check">
+                    <input type="checkbox" name="_remember_me" id="remember_me" class="form-check-input">
+                    <label class="form-check-label text-white-50 small" for="remember_me">Se souvenir de moi</label>
                 </div>
+                {# Optionnel : lien mot de passe oublié #}
+            </div>
+
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+            <button class="btn-login" type="submit">
+                <i class="bi bi-box-arrow-in-right me-2"></i>Se connecter
+            </button>
+
+            <div class="register-link">
+                Pas encore de compte ? <a href="{{ path('app_register') }}">Créer un compte</a>
+            </div>
+        </form>
+    </div>
+
+    <div class="info-side">
+        <div class="feature-item">
+            <div class="feature-icon"><i class="bi bi-journal-check"></i></div>
+            <div>
+                <h5 class="mb-1">Organisation simple</h5>
+                <p class="small text-white-50 mb-0">Retrouvez toutes vos matières au même endroit.</p>
+            </div>
+        </div>
+        <div class="feature-item">
+            <div class="feature-icon"><i class="bi bi-alarm"></i></div>
+            <div>
+                <h5 class="mb-1">Gestion du temps</h5>
+                <p class="small text-white-50 mb-0">Utilisez le timer Pomodoro pour rester concentré.</p>
+            </div>
+        </div>
+        <div class="feature-item">
+            <div class="feature-icon"><i class="bi bi-stars"></i></div>
+            <div>
+                <h5 class="mb-1">Expérience Premium</h5>
+                <p class="small text-white-50 mb-0">Une interface fluide et moderne pour vos études.</p>
             </div>
         </div>
     </div>
+</div>
 
-    {# Style personnalisé #}
-    {% block stylesheets %}
-        {{ parent() }}
-        <style>
-            body {
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            }
-
-            .card {
-                border-radius: 20px !important;
-            }
-
-            .form-control:focus {
-                border-color: #667eea;
-                box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
-            }
-
-            .btn-primary {
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                border: none;
-            }
-
-            .btn-primary:hover {
-                background: linear-gradient(135deg, #5568d3 0%, #6941a5 100%);
-                transform: translateY(-2px);
-                box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
-            }
-        </style>
-    {% endblock %}
-{% endblock %}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
