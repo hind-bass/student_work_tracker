@@ -1,4 +1,4 @@
-{# templates/course/new.html.twig #}
+{# templates/course/new.html.twig - VERSION MODERNE #}
 {% extends 'base.html.twig' %}
 
 {% block title %}Ajouter une matière - {{ parent() }}{% endblock %}
@@ -7,10 +7,11 @@
     <div class="container py-5">
         <div class="row justify-content-center">
             <div class="col-lg-8">
-                <div class="card shadow-sm border-0">
-                    <div class="card-header bg-primary text-white py-3">
-                        <h1 class="h4 mb-0">
-                            <i class="bi bi-journal-plus me-2"></i>Ajouter une nouvelle matière
+                <div class="card shadow-lg border-0">
+                    <div class="card-header py-4" style="background: linear-gradient(135deg, var(--primary), var(--dark)); border-bottom: 2px solid var(--accent);">
+                        <h1 class="h4 mb-0 text-white">
+                            <i class="bi bi-journal-plus me-2" style="color: var(--accent);"></i>
+                            Ajouter une nouvelle matière
                         </h1>
                     </div>
                     <div class="card-body p-4">
@@ -18,50 +19,50 @@
 
                         <div class="row">
                             <div class="col-md-8 mb-3">
-                                {{ form_label(form.name) }}
+                                {{ form_label(form.name, null, {'label_attr': {'class': 'form-label text-white'}}) }}
                                 {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
-                                {{ form_errors(form.name) }}
+                                <div class="text-danger small">{{ form_errors(form.name) }}</div>
                             </div>
                             <div class="col-md-4 mb-3">
-                                {{ form_label(form.code) }}
+                                {{ form_label(form.code, null, {'label_attr': {'class': 'form-label text-white'}}) }}
                                 {{ form_widget(form.code, {'attr': {'class': 'form-control'}}) }}
-                                {{ form_errors(form.code) }}
+                                <div class="text-danger small">{{ form_errors(form.code) }}</div>
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                {{ form_label(form.professor) }}
+                                {{ form_label(form.professor, null, {'label_attr': {'class': 'form-label text-white'}}) }}
                                 {{ form_widget(form.professor, {'attr': {'class': 'form-control'}}) }}
-                                {{ form_errors(form.professor) }}
+                                <div class="text-danger small">{{ form_errors(form.professor) }}</div>
                             </div>
                             <div class="col-md-3 mb-3">
-                                {{ form_label(form.credits) }}
+                                {{ form_label(form.credits, null, {'label_attr': {'class': 'form-label text-white'}}) }}
                                 {{ form_widget(form.credits, {'attr': {'class': 'form-control'}}) }}
-                                {{ form_errors(form.credits) }}
+                                <div class="text-danger small">{{ form_errors(form.credits) }}</div>
                             </div>
                             <div class="col-md-3 mb-3">
-                                {{ form_label(form.color) }}
-                                {{ form_widget(form.color, {'attr': {'class': 'form-control form-control-color w-100'}}) }}
-                                {{ form_errors(form.color) }}
+                                {{ form_label(form.color, null, {'label_attr': {'class': 'form-label text-white'}}) }}
+                                {{ form_widget(form.color, {'attr': {'class': 'form-control form-control-color w-100', 'style': 'height: 50px;'}}) }}
+                                <div class="text-danger small">{{ form_errors(form.color) }}</div>
                             </div>
                         </div>
 
                         <div class="mb-3">
-                            {{ form_label(form.description) }}
+                            {{ form_label(form.description, null, {'label_attr': {'class': 'form-label text-white'}}) }}
                             {{ form_widget(form.description, {'attr': {'class': 'form-control', 'rows': '3'}}) }}
-                            {{ form_errors(form.description) }}
+                            <div class="text-danger small">{{ form_errors(form.description) }}</div>
                         </div>
 
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                {{ form_label(form.semester) }}
+                                {{ form_label(form.semester, null, {'label_attr': {'class': 'form-label text-white'}}) }}
                                 {{ form_widget(form.semester, {'attr': {'class': 'form-control'}}) }}
-                                {{ form_errors(form.semester) }}
+                                <div class="text-danger small">{{ form_errors(form.semester) }}</div>
                             </div>
                         </div>
 
-                        <hr class="my-4">
+                        <hr class="my-4" style="border-color: rgba(192, 135, 106, 0.3);">
 
                         <div class="d-flex justify-content-between align-items-center">
                             <a href="{{ path('app_course_index') }}" class="btn btn-outline-secondary">
@@ -76,8 +77,8 @@
                     </div>
                 </div>
 
-                <div class="mt-4 text-center text-muted">
-                    <small>
+                <div class="mt-4 text-center">
+                    <small class="text-white-50">
                         <i class="bi bi-info-circle me-1"></i>
                         Les matières vous permettent de regrouper vos devoirs et de suivre votre progression par discipline.
                     </small>

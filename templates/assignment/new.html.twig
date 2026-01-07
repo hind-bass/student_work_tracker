@@ -1,4 +1,4 @@
-{# templates/assignment/new.html.twig #}
+{# templates/assignment/new.html.twig - VERSION MODERNE #}
 {% extends 'base.html.twig' %}
 
 {% block title %}Nouveau travail - {{ parent() }}{% endblock %}
@@ -7,51 +7,68 @@
     <div class="container py-4">
         <div class="row justify-content-center">
             <div class="col-lg-9">
-                {# En-tête #}
+                {# ============================================
+                   📝 EN-TÊTE
+                   ============================================ #}
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <div>
-                        <h1 class="h3 mb-1">
-                            <i class="bi bi-plus-circle me-2"></i> Nouveau travail
+                        <h1 class="h3 mb-1 text-white">
+                            <i class="bi bi-plus-circle me-2" style="color: var(--accent);"></i>
+                            Nouveau travail
                         </h1>
-                        <p class="text-muted mb-0">Ajoutez un nouveau devoir ou projet</p>
+                        <p class="text-white-50 mb-0">Ajoutez un nouveau devoir ou projet</p>
                     </div>
                     <a href="{{ path('app_assignment_index') }}" class="btn btn-outline-secondary">
                         <i class="bi bi-arrow-left me-1"></i> Retour
                     </a>
                 </div>
 
-                {# Formulaire #}
+                {# ============================================
+                   📋 FORMULAIRE
+                   ============================================ #}
                 <div class="card shadow-sm">
                     <div class="card-body p-4">
                         {{ form_start(form) }}
 
                         {# Titre #}
                         <div class="mb-4">
-                            {{ form_row(form.title) }}
+                            {{ form_label(form.title, null, {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(form.title) }}
+                            <div class="text-danger small">{{ form_errors(form.title) }}</div>
                         </div>
 
                         {# Description #}
                         <div class="mb-4">
-                            {{ form_row(form.description) }}
+                            {{ form_label(form.description, null, {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(form.description) }}
+                            <div class="text-danger small">{{ form_errors(form.description) }}</div>
                         </div>
 
-                        {# Ligne : Matière et Date d'échéance #}
+                        {# Matière et Date d'échéance #}
                         <div class="row">
                             <div class="col-md-6 mb-4">
-                                {{ form_row(form.course) }}
+                                {{ form_label(form.course, null, {'label_attr': {'class': 'form-label'}}) }}
+                                {{ form_widget(form.course) }}
+                                <div class="text-danger small">{{ form_errors(form.course) }}</div>
                             </div>
                             <div class="col-md-6 mb-4">
-                                {{ form_row(form.dueDate) }}
+                                {{ form_label(form.dueDate, null, {'label_attr': {'class': 'form-label'}}) }}
+                                {{ form_widget(form.dueDate) }}
+                                <div class="text-danger small">{{ form_errors(form.dueDate) }}</div>
                             </div>
                         </div>
 
-                        {# Ligne : Priorité et Statut #}
+                        {# Priorité et Statut #}
                         <div class="row">
                             <div class="col-md-6 mb-4">
-                                {{ form_row(form.priority) }}
+                                {{ form_label(form.priority, null, {'label_attr': {'class': 'form-label'}}) }}
+                                {{ form_widget(form.priority) }}
+                                <div class="text-danger small">{{ form_errors(form.priority) }}</div>
                             </div>
                             <div class="col-md-6 mb-4">
-                                {{ form_row(form.status) }}
+                                {{ form_label(form.status, null, {'label_attr': {'class': 'form-label'}}) }}
+                                {{ form_widget(form.status) }}
+                                <div class="text-danger small">{{ form_errors(form.status) }}</div>
                             </div>
                         </div>
 
@@ -62,27 +79,39 @@
                             </label>
                             <div class="d-flex align-items-center gap-3">
                                 {{ form_widget(form.completionPercentage, {
-                                    'attr': {'class': 'form-range flex-grow-1'}
+                                    'attr': {'class': 'form-range flex-grow-1', 'id': 'progressRange'}
                                 }) }}
-                                <output class="badge bg-primary fs-6" style="min-width: 50px;">0%</output>
+                                <output class="badge fs-6" id="progressOutput" style="min-width: 50px; background: linear-gradient(135deg, var(--accent), var(--beige));">
+                                    0%
+                                </output>
                             </div>
-                            {{ form_help(form.completionPercentage) }}
-                            {{ form_errors(form.completionPercentage) }}
+                            <div class="progress mt-2" style="height: 25px; background: rgba(45, 35, 38, 0.5);">
+                                <div class="progress-bar bg-secondary" id="progressBar" role="progressbar" style="width: 0%">
+                                    0%
+                                </div>
+                            </div>
+                            <div class="text-danger small">{{ form_errors(form.completionPercentage) }}</div>
                         </div>
 
-                        {# Ligne : Heures estimées et réelles #}
+                        {# Heures estimées et réelles #}
                         <div class="row">
                             <div class="col-md-6 mb-4">
-                                {{ form_row(form.estimatedHours) }}
+                                {{ form_label(form.estimatedHours, null, {'label_attr': {'class': 'form-label'}}) }}
+                                {{ form_widget(form.estimatedHours) }}
+                                <div class="text-danger small">{{ form_errors(form.estimatedHours) }}</div>
                             </div>
                             <div class="col-md-6 mb-4">
-                                {{ form_row(form.actualHours) }}
+                                {{ form_label(form.actualHours, null, {'label_attr': {'class': 'form-label'}}) }}
+                                {{ form_widget(form.actualHours) }}
+                                <div class="text-danger small">{{ form_errors(form.actualHours) }}</div>
                             </div>
                         </div>
 
                         {# Notes #}
                         <div class="mb-4">
-                            {{ form_row(form.notes) }}
+                            {{ form_label(form.notes, null, {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(form.notes) }}
+                            <div class="text-danger small">{{ form_errors(form.notes) }}</div>
                         </div>
 
                         {# Boutons #}
@@ -100,11 +129,44 @@
                 </div>
 
                 {# Aide #}
-                <div class="alert alert-info mt-3">
-                    <i class="bi bi-lightbulb-fill me-2"></i>
+                <div class="alert alert-info mt-3" style="background: rgba(192, 135, 106, 0.2); border-left: 4px solid var(--accent); backdrop-filter: blur(10px);">
+                    <i class="bi bi-lightbulb-fill me-2" style="color: var(--accent);"></i>
                     <strong>Astuce :</strong> Définissez une date d'échéance réaliste et une priorité appropriée pour mieux organiser votre temps !
                 </div>
             </div>
         </div>
     </div>
+
+    {% block javascripts %}
+        {{ parent() }}
+        <script>
+            // Mise à jour en temps réel de la progression
+            const range = document.getElementById('progressRange');
+            const output = document.getElementById('progressOutput');
+            const progressBar = document.getElementById('progressBar');
+
+            if (range && output && progressBar) {
+                range.addEventListener('input', function() {
+                    const value = this.value;
+                    output.textContent = value + '%';
+                    progressBar.style.width = value + '%';
+                    progressBar.textContent = value + '%';
+
+                    // Changer la couleur selon le pourcentage
+                    progressBar.className = 'progress-bar';
+                    if (value == 0) {
+                        progressBar.classList.add('bg-secondary');
+                    } else if (value < 30) {
+                        progressBar.style.background = 'linear-gradient(90deg, var(--danger), #8B3A32)';
+                    } else if (value < 70) {
+                        progressBar.style.background = 'linear-gradient(90deg, var(--warning), #B8935E)';
+                    } else if (value < 100) {
+                        progressBar.style.background = 'linear-gradient(90deg, var(--accent), var(--beige))';
+                    } else {
+                        progressBar.style.background = 'linear-gradient(90deg, var(--success), #5A7D6F)';
+                    }
+                });
+            }
+        </script>
+    {% endblock %}
 {% endblock %}

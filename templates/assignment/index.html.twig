@@ -1,17 +1,20 @@
-{# templates/assignment/index.html.twig #}
+{# templates/assignment/index.html.twig - VERSION MODERNE #}
 {% extends 'base.html.twig' %}
 
 {% block title %}Mes travaux - {{ parent() }}{% endblock %}
 
 {% block body %}
     <div class="container-fluid px-4 py-4">
-        {# En-tête #}
+        {# ============================================
+           📋 EN-TÊTE
+           ============================================ #}
         <div class="row mb-4">
             <div class="col-lg-8">
-                <h1 class="h2 mb-2">
-                    <i class="bi bi-card-checklist me-2"></i> Mes travaux
+                <h1 class="h2 mb-2 text-white">
+                    <i class="bi bi-card-checklist me-2" style="color: var(--accent);"></i>
+                    Mes travaux
                 </h1>
-                <p class="text-muted mb-0">
+                <p class="text-white-50 mb-0">
                     Gérez et suivez tous vos devoirs et projets
                 </p>
             </div>
@@ -23,100 +26,107 @@
         </div>
 
         {% if assignments is empty %}
-            {# État vide #}
+            {# ============================================
+               📭 ÉTAT VIDE
+               ============================================ #}
             <div class="text-center py-5">
-                <i class="bi bi-inbox text-muted" style="font-size: 6rem;"></i>
-                <h3 class="text-muted mt-4 mb-3">Aucun travail pour le moment</h3>
-                <p class="text-muted mb-4">Commencez par créer votre premier travail !</p>
+                <i class="bi bi-inbox" style="font-size: 6rem; color: var(--slate);"></i>
+                <h3 class="text-white mt-4 mb-3">Aucun travail pour le moment</h3>
+                <p class="text-white-50 mb-4">Commencez par créer votre premier travail !</p>
                 <a href="{{ path('app_assignment_new') }}" class="btn btn-primary btn-lg">
                     <i class="bi bi-plus-circle me-2"></i> Créer mon premier travail
                 </a>
             </div>
         {% else %}
-            {# Statistiques rapides #}
+            {# ============================================
+               📊 STATISTIQUES RAPIDES
+               ============================================ #}
             <div class="row g-3 mb-4">
                 <div class="col-md-3">
                     <div class="card text-center">
                         <div class="card-body">
-                            <h3 class="mb-0">{{ assignments|length }}</h3>
-                            <small class="text-muted">Total</small>
+                            <h3 class="mb-0 text-white">{{ assignments|length }}</h3>
+                            <small class="text-white-50">Total</small>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="card text-center">
                         <div class="card-body">
-                            <h3 class="mb-0 text-secondary">
+                            <h3 class="mb-0" style="color: var(--slate);">
                                 {{ assignments|filter(a => a.status.value == 'todo')|length }}
                             </h3>
-                            <small class="text-muted">À faire</small>
+                            <small class="text-white-50">À faire</small>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="card text-center">
                         <div class="card-body">
-                            <h3 class="mb-0 text-primary">
+                            <h3 class="mb-0" style="color: var(--accent);">
                                 {{ assignments|filter(a => a.status.value == 'in_progress')|length }}
                             </h3>
-                            <small class="text-muted">En cours</small>
+                            <small class="text-white-50">En cours</small>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="card text-center">
                         <div class="card-body">
-                            <h3 class="mb-0 text-success">
+                            <h3 class="mb-0" style="color: var(--success);">
                                 {{ assignments|filter(a => a.status.value == 'completed')|length }}
                             </h3>
-                            <small class="text-muted">Terminés</small>
+                            <small class="text-white-50">Terminés</small>
                         </div>
                     </div>
                 </div>
             </div>
 
-            {# Liste des travaux #}
+            {# ============================================
+               📝 LISTE DES TRAVAUX
+               ============================================ #}
             <div class="card">
-                <div class="card-header bg-white py-3">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">
-                            <i class="bi bi-list-task me-2"></i> Liste complète
-                        </h5>
-                        <span class="badge bg-primary">{{ assignments|length }} travaux</span>
-                    </div>
+                <div class="card-header d-flex justify-content-between align-items-center py-3">
+                    <h5 class="mb-0 text-white">
+                        <i class="bi bi-list-task me-2" style="color: var(--accent);"></i>
+                        Liste complète
+                    </h5>
+                    <span class="badge" style="background: linear-gradient(135deg, var(--accent), var(--beige));">
+                        {{ assignments|length }} travaux
+                    </span>
                 </div>
                 <div class="card-body p-0">
                     <div class="table-responsive">
                         <table class="table table-hover mb-0">
-                            <thead class="table-light">
+                            <thead style="background: rgba(134, 87, 73, 0.2);">
                             <tr>
-                                <th style="width: 5px;"></th>
-                                <th>Titre</th>
-                                <th>Matière</th>
-                                <th>Échéance</th>
-                                <th>Priorité</th>
-                                <th>Statut</th>
-                                <th style="width: 120px;">Progression</th>
-                                <th class="text-center" style="width: 150px;">Actions</th>
+                                <th style="width: 5px; border: none;"></th>
+                                <th class="text-black" style="border: none;">Titre</th>
+                                <th class="text-black" style="border: none;">Matière</th>
+                                <th class="text-black" style="border: none;">Échéance</th>
+                                <th class="text-black" style="border: none;">Priorité</th>
+                                <th class="text-black" style="border: none;">Statut</th>
+                                <th class="text-black" style="width: 120px; border: none;">Progression</th>
+                                <th class="text-center text-black" style="width: 150px; border: none;">Actions</th>
                             </tr>
                             </thead>
                             <tbody>
                             {% for assignment in assignments %}
-                                <tr>
+                                <tr style="border-color: rgba(192, 135, 106, 0.2);">
                                     {# Barre de priorité #}
                                     <td class="p-0">
                                         <div style="width: 5px; height: 100%; background-color: {{ assignment.priority.color }};"></div>
                                     </td>
 
                                     {# Titre #}
-                                    <td>
+                                    <td class="text-black">
                                         <div class="d-flex align-items-center">
                                             <i class="{{ assignment.urgencyIcon }} me-2 {{ assignment.urgencyClass }}"></i>
                                             <div>
                                                 <strong>{{ assignment.title }}</strong>
                                                 {% if assignment.description %}
                                                     <br>
-                                                    <small class="text-muted">
+                                                    <small class="text-black-50">
                                                         {{ assignment.description|length > 60 ? assignment.description|slice(0, 60) ~ '...' : assignment.description }}
                                                     </small>
                                                 {% endif %}
@@ -126,9 +136,9 @@
 
                                     {# Matière #}
                                     <td>
-                                    <span class="badge" style="background-color: {{ assignment.course.color }}">
-                                        {{ assignment.course.name }}
-                                    </span>
+                                        <span class="badge" style="background-color: {{ assignment.course.color }}">
+                                            {{ assignment.course.name }}
+                                        </span>
                                     </td>
 
                                     {# Échéance #}
@@ -153,47 +163,40 @@
 
                                     {# Priorité #}
                                     <td>
-                                    <span class="badge {{ assignment.priority.badgeClass }}">
-                                        <i class="bi bi-flag-fill"></i>
-                                        {{ assignment.priority.label }}
-                                    </span>
+                                        <span class="badge {{ assignment.priority.badgeClass }}">
+                                            <i class="bi bi-flag-fill"></i>
+                                            {{ assignment.priority.label }}
+                                        </span>
                                     </td>
 
                                     {# Statut #}
                                     <td>
-                                    <span class="badge {{ assignment.status.badgeClass }}">
-                                        {{ assignment.status.icon }}
-                                        {{ assignment.status.label }}
-                                    </span>
+                                        <span class="badge {{ assignment.status.badgeClass }}">
+                                            {{ assignment.status.icon }}
+                                            {{ assignment.status.label }}
+                                        </span>
                                     </td>
 
                                     {# Progression #}
                                     <td>
                                         <div class="d-flex align-items-center">
-                                            <div class="progress flex-grow-1 me-2" style="height: 8px;">
-                                                <div class="progress-bar {{ assignment.progressBarClass }}"
-                                                     style="width: {{ assignment.completionPercentage }}%"></div>
+                                            <div class="progress flex-grow-1 me-2" style="height: 8px; background: rgba(45, 35, 38, 0.5);">
+                                                <div class="progress-bar {{ assignment.progressBarClass }}" style="width: {{ assignment.completionPercentage }}%"></div>
                                             </div>
-                                            <small class="text-muted">{{ assignment.completionPercentage }}%</small>
+                                            <small class="text-white-50">{{ assignment.completionPercentage }}%</small>
                                         </div>
                                     </td>
 
                                     {# Actions #}
                                     <td class="text-center">
                                         <div class="btn-group btn-group-sm" role="group">
-                                            <a href="{{ path('app_assignment_show', {id: assignment.id}) }}"
-                                               class="btn btn-outline-info" title="Voir">
+                                            <a href="{{ path('app_assignment_show', {id: assignment.id}) }}" class="btn btn-outline-primary" title="Voir">
                                                 <i class="bi bi-eye"></i>
                                             </a>
-                                            <a href="{{ path('app_assignment_edit', {id: assignment.id}) }}"
-                                               class="btn btn-outline-primary" title="Modifier">
+                                            <a href="{{ path('app_assignment_edit', {id: assignment.id}) }}" class="btn" style="background: linear-gradient(135deg, var(--accent), var(--beige)); color: white; border: none;" title="Modifier">
                                                 <i class="bi bi-pencil"></i>
                                             </a>
-                                            <button type="button"
-                                                    class="btn btn-outline-danger"
-                                                    data-bs-toggle="modal"
-                                                    data-bs-target="#deleteModal{{ assignment.id }}"
-                                                    title="Supprimer">
+                                            <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ assignment.id }}" title="Supprimer">
                                                 <i class="bi bi-trash"></i>
                                             </button>
                                         </div>
@@ -203,28 +206,26 @@
                                 {# Modal de suppression #}
                                 <div class="modal fade" id="deleteModal{{ assignment.id }}" tabindex="-1">
                                     <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header bg-danger text-white">
-                                                <h5 class="modal-title">
+                                        <div class="modal-content" style="background: var(--dark); border: 1px solid var(--accent);">
+                                            <div class="modal-header" style="background: linear-gradient(135deg, var(--danger), #8B3A32); border-bottom: 1px solid rgba(192, 135, 106, 0.3);">
+                                                <h5 class="modal-title text-white">
                                                     <i class="bi bi-exclamation-triangle-fill me-2"></i>
                                                     Confirmer la suppression
                                                 </h5>
                                                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                                             </div>
                                             <div class="modal-body">
-                                                <p>Êtes-vous sûr de vouloir supprimer ce travail ?</p>
-                                                <div class="alert alert-warning">
-                                                    <strong>{{ assignment.title }}</strong>
+                                                <p class="text-white">Êtes-vous sûr de vouloir supprimer ce travail ?</p>
+                                                <div class="alert" style="background: rgba(184, 80, 66, 0.2); border-left: 4px solid var(--danger);">
+                                                    <strong class="text-white">{{ assignment.title }}</strong>
                                                 </div>
-                                                <p class="text-danger small mb-0">
+                                                <p class="small mb-0" style="color: var(--danger);">
                                                     <i class="bi bi-info-circle me-1"></i>
                                                     Cette action est irréversible.
                                                 </p>
                                             </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                                                    Annuler
-                                                </button>
+                                            <div class="modal-footer" style="border-top: 1px solid rgba(192, 135, 106, 0.3);">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
                                                 <form method="post" action="{{ path('app_assignment_delete', {id: assignment.id}) }}" class="d-inline">
                                                     <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ assignment.id) }}">
                                                     <button type="submit" class="btn btn-danger">
@@ -249,6 +250,7 @@
         <style>
             .table td {
                 vertical-align: middle;
+                border-color: rgba(192, 135, 106, 0.2);
             }
 
             .btn-group-sm .btn {

@@ -1,4 +1,4 @@
-{# templates/base.html.twig #}
+{# templates/base.html.twig - NOUVELLE VERSION AVEC PALETTE MODERNE #}
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -16,49 +16,175 @@
 
     {% block stylesheets %}
         <style>
+            /* ============================================
+               🎨 NOUVELLE PALETTE DE COULEURS
+               ============================================ */
             :root {
-                --primary-blue: #0d6efd;
-                --success-green: #198754;
-                --warning-yellow: #ffc107;
-                --danger-red: #dc3545;
-                --info-cyan: #0dcaf0;
-                --bg-light: #f8f9fa;
+                --primary: #865749;      /* Brun terracotta principal */
+                --accent: #C0876A;       /* Beige rosé - accents */
+                --beige: #A76048;        /* Terracotta clair - highlights */
+                --darker: #2D2326;       /* Presque noir - backgrounds */
+                --dark: #473D43;         /* Brun foncé - cartes */
+                --slate: #958377;        /* Gris taupe - textes secondaires */
+                --bg-light: #9f8263;     /* Fond clair crème */
+                --success: #6B9080;      /* Vert sauge */
+                --warning: #D4A574;      /* Or chaud */
+                --danger: #B85042;       /* Rouge terre cuite */
             }
 
+            /* ============================================
+               📐 STRUCTURE GÉNÉRALE
+               ============================================ */
             body {
                 min-height: 100vh;
-                background-color: var(--bg-light);
+                background: linear-gradient(135deg, var(--slate) 0%, var(--darker) 100%);
                 font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+                color: #75868d;
             }
 
+            /* ============================================
+               🧭 NAVIGATION BAR - DESIGN MODERNE
+               ============================================ */
             .navbar {
-                box-shadow: 0 2px 4px rgba(0,0,0,.1);
-                background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%) !important;
+                background: linear-gradient(135deg, var(--primary) 0%, var(--dark) 100%) !important;
+                box-shadow: 0 4px 20px rgba(0,0,0,.3);
+                border-bottom: 2px solid var(--accent);
+                backdrop-filter: blur(10px);
             }
 
             .navbar-brand {
-                font-weight: 600;
-                font-size: 1.25rem;
+                font-weight: 700;
+                font-size: 1.4rem;
+                color: #ae8c8c !important;
+                transition: all 0.3s ease;
             }
 
-            .card {
-                border: none;
-                box-shadow: 0 2px 8px rgba(0,0,0,.08);
-                border-radius: 12px;
+            .navbar-brand:hover {
+                color: var(--accent) !important;
+                transform: translateX(5px);
+            }
+
+            .navbar-brand i {
+                color: var(--accent);
+                font-size: 1.6rem;
+            }
+
+            /* Style des liens de navigation */
+            .nav-link {
+                color: rgba(255, 255, 255, 0.8) !important;
+                font-weight: 500;
+                padding: 0.6rem 1.2rem !important;
+                border-radius: 10px;
                 transition: all 0.3s ease;
+                margin: 0 0.3rem;
+            }
+
+            .nav-link:hover {
+                background: rgba(192, 135, 106, 0.2);
+                color: var(--accent) !important;
+                transform: translateY(-2px);
+            }
+
+            .nav-link.active {
+                background: rgba(192, 135, 106, 0.25);
+                color: var(--accent) !important;
+                font-weight: 600;
+            }
+
+            .nav-link i {
+                margin-right: 0.4rem;
+            }
+
+            /* Avatar utilisateur */
+            .user-avatar {
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                background: linear-gradient(135deg, var(--accent), var(--beige));
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: #81b99e;
+                font-weight: 700;
+                font-size: 0.95rem;
+                border: 2px solid rgba(255,255,255,0.3);
+                transition: all 0.3s ease;
+            }
+
+            .user-avatar:hover {
+                transform: scale(1.1);
+                border-color: var(--accent);
+            }
+
+            /* Dropdown menu */
+            .dropdown-menu {
+                background: var(--dark);
+                border: 1px solid var(--accent);
+                border-radius: 15px;
+                padding: 0.8rem;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            }
+
+            .dropdown-item {
+                color: rgba(175, 153, 153, 0.9);
+                border-radius: 8px;
+                padding: 0.6rem 1rem;
+                transition: all 0.3s ease;
+            }
+
+            .dropdown-item:hover {
+                background: rgba(192, 135, 106, 0.2);
+                color: var(--accent);
+            }
+
+            .dropdown-divider {
+                border-color: rgba(192, 135, 106, 0.3);
+            }
+
+            /* ============================================
+               🎴 CARTES - DESIGN MODERNE
+               ============================================ */
+            .card {
+                background: rgba(71, 61, 67, 0.6);
+                backdrop-filter: blur(20px);
+                border: 1px solid rgba(192, 135, 106, 0.3);
+                border-radius: 20px;
+                box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+                transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
                 margin-bottom: 1.5rem;
+                overflow: hidden;
             }
 
             .card:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 4px 12px rgba(0,0,0,.12);
+                transform: translateY(-5px);
+                box-shadow: 0 15px 40px rgba(192, 135, 106, 0.3);
+                border-color: var(--accent);
             }
 
-            .stat-card {
-                border-left: 4px solid;
+            .card-header {
+                background: linear-gradient(135deg, rgba(134, 87, 73, 0.3), rgba(71, 61, 67, 0.3));
+                border-bottom: 1px solid rgba(192, 135, 106, 0.2);
+                color: #fff;
+                font-weight: 600;
+                padding: 1.2rem 1.5rem;
+            }
+
+            .card-body {
+                color: rgba(255,255,255,0.95);
                 padding: 1.5rem;
+            }
+
+            /* ============================================
+               📊 CARTES STATISTIQUES
+               ============================================ */
+            .stat-card {
+                background: linear-gradient(135deg, rgba(134, 87, 73, 0.2), rgba(71, 61, 67, 0.3));
+                border-left: 4px solid var(--accent);
+                padding: 1.8rem;
+                border-radius: 15px;
                 position: relative;
                 overflow: hidden;
+                transition: all 0.3s ease;
             }
 
             .stat-card::before {
@@ -66,128 +192,217 @@
                 position: absolute;
                 top: 0;
                 right: 0;
-                width: 100px;
-                height: 100px;
-                background: rgba(255, 255, 255, 0.1);
+                width: 120px;
+                height: 120px;
+                background: radial-gradient(circle, rgba(192, 135, 106, 0.15), transparent);
                 border-radius: 50%;
                 transform: translate(30%, -30%);
             }
 
-            .stat-card.todo { border-left-color: #6c757d; }
-            .stat-card.in-progress { border-left-color: var(--primary-blue); }
-            .stat-card.completed { border-left-color: var(--success-green); }
-
-            .priority-indicator {
-                width: 4px;
-                height: 100%;
-                position: absolute;
-                left: 0;
-                top: 0;
-                border-radius: 4px 0 0 4px;
+            .stat-card:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 10px 25px rgba(0,0,0,0.3);
             }
 
-            .assignment-card {
-                position: relative;
-                padding-left: 1rem;
-                transition: all 0.2s ease;
-                border-radius: 8px;
-            }
+            .stat-card.todo { border-left-color: var(--slate); }
+            .stat-card.in-progress { border-left-color: var(--accent); }
+            .stat-card.completed { border-left-color: var(--success); }
 
-            .assignment-card:hover {
-                background-color: rgba(0,0,0,.02);
-            }
-
+            /* ============================================
+               🔘 BOUTONS - STYLE MODERNE
+               ============================================ */
             .btn {
-                border-radius: 8px;
-                font-weight: 500;
-                transition: all 0.2s ease;
+                border-radius: 12px;
+                font-weight: 600;
+                padding: 0.7rem 1.5rem;
+                transition: all 0.3s ease;
+                border: none;
             }
 
             .btn:hover {
-                transform: translateY(-1px);
+                transform: translateY(-2px);
+                box-shadow: 0 8px 20px rgba(0,0,0,0.3);
             }
 
+            .btn-primary {
+                background: linear-gradient(135deg, var(--primary), var(--beige));
+                color: white;
+            }
+
+            .btn-primary:hover {
+                background: linear-gradient(135deg, var(--beige), var(--primary));
+            }
+
+            .btn-success {
+                background: linear-gradient(135deg, var(--success), #5A7D6F);
+            }
+
+            .btn-outline-primary {
+                border: 2px solid var(--accent);
+                color: var(--accent);
+                background: transparent;
+            }
+
+            .btn-outline-primary:hover {
+                background: var(--accent);
+                color: white;
+            }
+
+            /* ============================================
+               🏷️ BADGES
+               ============================================ */
             .badge {
-                font-weight: 500;
-                padding: 0.4em 0.8em;
-                border-radius: 6px;
-            }
-
-            .bg-orange {
-                background-color: #fd7e14 !important;
-            }
-
-            .alert {
-                border-radius: 10px;
-                border: none;
-            }
-
-            footer {
-                margin-top: auto;
-                padding: 2rem 0;
-                background-color: white;
-                box-shadow: 0 -2px 4px rgba(0,0,0,.05);
-            }
-
-            .form-control, .form-select {
+                font-weight: 600;
+                padding: 0.5em 1em;
                 border-radius: 8px;
-                border: 1px solid #dee2e6;
-                transition: all 0.2s ease;
+                font-size: 0.85rem;
+            }
+
+            .bg-secondary { background-color: var(--slate) !important; }
+            .bg-primary { background-color: var(--accent) !important; }
+            .bg-success { background-color: var(--success) !important; }
+            .bg-warning { background-color: var(--warning) !important; }
+            .bg-danger { background-color: var(--danger) !important; }
+            .bg-orange { background-color: var(--beige) !important; }
+
+            /* ============================================
+               📝 FORMULAIRES
+               ============================================ */
+            .form-control, .form-select {
+                background: rgba(255, 255, 255, 0.05);
+                border: 1px solid rgba(192, 135, 106, 0.3);
+                border-radius: 12px;
+                color: #fff;
+                padding: 0.8rem 1rem;
+                transition: all 0.3s ease;
             }
 
             .form-control:focus, .form-select:focus {
-                border-color: var(--primary-blue);
-                box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.15);
+                background: rgba(255, 255, 255, 0.1);
+                border-color: var(--accent);
+                box-shadow: 0 0 0 4px rgba(192, 135, 106, 0.15);
+                color: #fff;
             }
 
+            .form-control::placeholder {
+                color: rgba(255,255,255,0.5);
+            }
+
+            .form-label {
+                color: var(--accent);
+                font-weight: 600;
+                font-size: 0.9rem;
+                margin-bottom: 0.5rem;
+            }
+
+            /* ============================================
+               📊 BARRES DE PROGRESSION
+               ============================================ */
             .progress {
-                border-radius: 10px;
-                height: 30px;
-                background-color: #e9ecef;
+                border-radius: 12px;
+                height: 35px;
+                background: rgba(45, 35, 38, 0.5);
+                border: 1px solid rgba(192, 135, 106, 0.2);
             }
 
             .progress-bar {
-                border-radius: 10px;
-                transition: width 0.6s ease;
-                font-weight: 600;
-            }
-
-            .modal-content {
                 border-radius: 12px;
+                transition: width 0.6s ease;
+                font-weight: 700;
+                background: linear-gradient(90deg, var(--accent), var(--beige));
+            }
+
+            /* ============================================
+               ⚠️ ALERTES
+               ============================================ */
+            .alert {
+                border-radius: 15px;
                 border: none;
+                padding: 1.2rem 1.5rem;
+                backdrop-filter: blur(10px);
             }
 
-            .modal-header {
-                border-radius: 12px 12px 0 0;
+            .alert-success {
+                background: rgba(107, 144, 128, 0.2);
+                border-left: 4px solid var(--success);
+                color: #A8DADC;
             }
 
+            .alert-danger {
+                background: rgba(184, 80, 66, 0.2);
+                border-left: 4px solid var(--danger);
+                color: #FFB4A2;
+            }
+
+            .alert-warning {
+                background: rgba(212, 165, 116, 0.2);
+                border-left: 4px solid var(--warning);
+                color: #FFE5B4;
+            }
+
+            .alert-info {
+                background: rgba(192, 135, 106, 0.2);
+                border-left: 4px solid var(--accent);
+                color: #E8D4C0;
+            }
+
+            /* ============================================
+               📱 RESPONSIVE
+               ============================================ */
             @media (max-width: 768px) {
+                .navbar-brand {
+                    font-size: 1.1rem;
+                }
+
+                .nav-link {
+                    padding: 0.5rem 1rem !important;
+                }
+
                 .card {
                     margin-bottom: 1rem;
                 }
-
-                .navbar-brand {
-                    font-size: 1rem;
-                }
             }
 
-            .user-avatar {
-                width: 35px;
-                height: 35px;
-                border-radius: 50%;
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                color: white;
-                font-weight: 600;
-                font-size: 0.875rem;
+            /* ============================================
+               🎭 ANIMATIONS
+               ============================================ */
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(20px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+
+            .card, .stat-card {
+                animation: fadeIn 0.6s ease;
+            }
+
+            /* ============================================
+               🦶 FOOTER
+               ============================================ */
+            footer {
+                margin-top: auto;
+                padding: 2rem 0;
+                background: rgba(45, 35, 38, 0.6);
+                border-top: 1px solid rgba(192, 135, 106, 0.2);
+                backdrop-filter: blur(10px);
+            }
+
+            footer a {
+                color: var(--accent);
+                text-decoration: none;
+                transition: all 0.3s ease;
+            }
+
+            footer a:hover {
+                color: var(--beige);
             }
         </style>
     {% endblock %}
 </head>
 <body class="d-flex flex-column min-vh-100">
-{# Navigation Bar #}
+
+{# ============================================
+   🧭 NAVIGATION BAR AVEC POMODORO
+   ============================================ #}
 {% if app.user %}
     <nav class="navbar navbar-expand-lg navbar-dark mb-4">
         <div class="container-fluid">
@@ -205,19 +420,26 @@
                     <li class="nav-item">
                         <a class="nav-link {{ app.request.get('_route') starts with 'app_dashboard' ? 'active' : '' }}"
                            href="{{ path('app_dashboard') }}">
-                            <i class="bi bi-speedometer2 me-1"></i> Tableau de bord
+                            <i class="bi bi-speedometer2"></i> Tableau de bord
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {{ app.request.get('_route') starts with 'app_assignment' ? 'active' : '' }}"
                            href="{{ path('app_assignment_index') }}">
-                            <i class="bi bi-card-checklist me-1"></i> Mes travaux
+                            <i class="bi bi-card-checklist"></i> Mes travaux
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {{ app.request.get('_route') starts with 'app_course' ? 'active' : '' }}"
                            href="{{ path('app_course_index') }}">
-                            <i class="bi bi-book me-1"></i> Mes matières
+                            <i class="bi bi-book"></i> Mes matières
+                        </a>
+                    </li>
+                    {# ✨ NOUVEAU : Lien Pomodoro #}
+                    <li class="nav-item">
+                        <a class="nav-link {{ app.request.get('_route') starts with 'app_pomodoro' ? 'active' : '' }}"
+                           href="{{ path('app_pomodoro') }}">
+                            <i class="bi bi-clock-history"></i> Pomodoro
                         </a>
                     </li>
                 </ul>
@@ -234,8 +456,8 @@
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li>
                                 <span class="dropdown-item-text">
-                                    <div class="fw-bold">{{ app.user.fullName }}</div>
-                                    <small class="text-muted">{{ app.user.email }}</small>
+                                    <div class="fw-bold text-white">{{ app.user.fullName }}</div>
+                                    <small class="text-white-50">{{ app.user.email }}</small>
                                 </span>
                             </li>
                             <li><hr class="dropdown-divider"></li>
@@ -252,7 +474,9 @@
     </nav>
 {% endif %}
 
-{# Flash Messages #}
+{# ============================================
+   💬 MESSAGES FLASH
+   ============================================ #}
 <div class="container">
     {% for label, messages in app.flashes %}
         {% for message in messages %}
@@ -273,32 +497,38 @@
     {% endfor %}
 </div>
 
-{# Main Content #}
+{# ============================================
+   📄 CONTENU PRINCIPAL
+   ============================================ #}
 <main class="flex-grow-1">
     {% block body %}{% endblock %}
 </main>
 
-{# Footer #}
+{# ============================================
+   🦶 FOOTER
+   ============================================ #}
 <footer class="mt-5">
     <div class="container">
         <div class="row">
             <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                <p class="text-muted mb-0">
+                <p class="text-white-50 mb-0">
                     <i class="bi bi-journal-bookmark-fill me-1"></i>
                     © {{ 'now'|date('Y') }} Gestionnaire Universitaire
                 </p>
             </div>
             <div class="col-md-6 text-center text-md-end">
-                <p class="text-muted mb-0">
+                <p class="text-white-50 mb-0">
                     Développé avec <i class="bi bi-heart-fill text-danger"></i> et
-                    <a href="https://symfony.com" target="_blank" class="text-decoration-none">Symfony</a>
+                    <a href="https://symfony.com" target="_blank">Symfony</a>
                 </p>
             </div>
         </div>
     </div>
 </footer>
 
-{# JavaScript #}
+{# ============================================
+   📜 JAVASCRIPT
+   ============================================ #}
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 {% block javascripts %}

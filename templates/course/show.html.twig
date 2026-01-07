@@ -1,4 +1,4 @@
-{# templates/course/show.html.twig #}
+{# templates/course/show.html.twig - VERSION MODERNE #}
 {% extends 'base.html.twig' %}
 
 {% block title %}{{ course.name }} - {{ parent() }}{% endblock %}
@@ -7,73 +7,75 @@
     <div class="container py-4">
         <div class="row justify-content-center">
             <div class="col-lg-10">
-                {# En-tête #}
+                {# ============================================
+                   📚 EN-TÊTE
+                   ============================================ #}
                 <div class="d-flex justify-content-between align-items-start mb-4">
                     <div class="flex-grow-1">
-                        <h1 class="h3 mb-2">{{ course.name }}</h1>
+                        <h1 class="h2 mb-2 text-white">{{ course.name }}</h1>
                         <div class="d-flex gap-2 align-items-center">
-                        <span class="badge fs-6" style="background-color: {{ course.color }}">
-                            {{ course.code }}
-                        </span>
+                            <span class="badge fs-6" style="background-color: {{ course.color }};">
+                                {{ course.code }}
+                            </span>
                             {% if course.professor %}
-                                <span class="text-muted">
-                            <i class="bi bi-person"></i> {{ course.professor }}
-                        </span>
+                                <span class="text-white-50">
+                                    <i class="bi bi-person"></i> {{ course.professor }}
+                                </span>
                             {% endif %}
                         </div>
                     </div>
 
                     {# Boutons d'action #}
                     <div class="d-flex gap-2">
-                        <a href="{{ path('app_course_edit', {id: course.id}) }}"
-                           class="btn btn-primary">
+                        <a href="{{ path('app_course_edit', {id: course.id}) }}" class="btn btn-primary">
                             <i class="bi bi-pencil"></i> Modifier
                         </a>
-                        <a href="{{ path('app_course_index') }}"
-                           class="btn btn-outline-secondary">
+                        <a href="{{ path('app_course_index') }}" class="btn btn-outline-secondary">
                             <i class="bi bi-arrow-left"></i> Retour
                         </a>
                     </div>
                 </div>
 
-                {# Informations de la matière #}
+                {# ============================================
+                   ℹ️ INFORMATIONS DE LA MATIÈRE
+                   ============================================ #}
                 <div class="card shadow-sm mb-4">
                     <div class="card-body p-4">
                         <div class="row">
                             <div class="col-md-4 mb-3">
-                                <h6 class="text-muted text-uppercase small mb-2">
+                                <h6 class="text-white-50 text-uppercase small mb-2">
                                     <i class="bi bi-tag"></i> Code
                                 </h6>
-                                <p class="mb-0 fs-5">{{ course.code }}</p>
+                                <p class="mb-0 fs-5 text-white">{{ course.code }}</p>
                             </div>
 
                             <div class="col-md-4 mb-3">
-                                <h6 class="text-muted text-uppercase small mb-2">
+                                <h6 class="text-white-50 text-uppercase small mb-2">
                                     <i class="bi bi-person"></i> Professeur
                                 </h6>
-                                <p class="mb-0 fs-5">{{ course.professor ?: 'Non renseigné' }}</p>
+                                <p class="mb-0 fs-5 text-white">{{ course.professor ?: 'Non renseigné' }}</p>
                             </div>
 
                             <div class="col-md-4 mb-3">
-                                <h6 class="text-muted text-uppercase small mb-2">
+                                <h6 class="text-white-50 text-uppercase small mb-2">
                                     <i class="bi bi-palette"></i> Couleur
                                 </h6>
                                 <div class="d-flex align-items-center">
-                                    <div class="rounded"
-                                         style="width: 40px; height: 40px; background-color: {{ course.color }}; border: 2px solid #ddd;">
-                                    </div>
-                                    <span class="ms-2">{{ course.color }}</span>
+                                    <div class="rounded" style="width: 40px; height: 40px; background-color: {{ course.color }}; border: 2px solid rgba(255,255,255,0.3);"></div>
+                                    <span class="ms-2 text-white">{{ course.color }}</span>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                {# Travaux associés #}
+                {# ============================================
+                   📋 TRAVAUX ASSOCIÉS
+                   ============================================ #}
                 <div class="card shadow-sm mb-3">
-                    <div class="card-header bg-white d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">
-                            <i class="bi bi-card-checklist"></i>
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0 text-white">
+                            <i class="bi bi-card-checklist" style="color: var(--accent);"></i>
                             Travaux associés ({{ course.assignments|length }})
                         </h5>
                         <a href="{{ path('app_assignment_new') }}" class="btn btn-sm btn-primary">
@@ -82,24 +84,24 @@
                     </div>
                     <div class="card-body">
                         {% if course.assignments is empty %}
-                            <p class="text-muted text-center py-4 mb-0">
+                            <p class="text-center py-4 mb-0" style="color: var(--slate);">
                                 <i class="bi bi-inbox fs-1 d-block mb-2"></i>
                                 Aucun travail pour cette matière
                             </p>
                         {% else %}
                             <div class="list-group list-group-flush">
                                 {% for assignment in course.assignments %}
-                                    <div class="list-group-item">
+                                    <div class="list-group-item" style="background: transparent; border-color: rgba(192, 135, 106, 0.2);">
                                         <div class="d-flex w-100 justify-content-between align-items-start">
                                             <div class="flex-grow-1">
-                                                <h6 class="mb-1">{{ assignment.title }}</h6>
+                                                <h6 class="mb-1 text-white">{{ assignment.title }}</h6>
                                                 <div class="mb-2">
-                                            <span class="badge {{ assignment.status.badgeClass }}">
-                                                {{ assignment.status.icon }} {{ assignment.status.label }}
-                                            </span>
+                                                    <span class="badge {{ assignment.status.badgeClass }}">
+                                                        {{ assignment.status.icon }} {{ assignment.status.label }}
+                                                    </span>
                                                     <span class="badge {{ assignment.priority.badgeClass }}">
-                                                {{ assignment.priority.label }}
-                                            </span>
+                                                        {{ assignment.priority.label }}
+                                                    </span>
                                                 </div>
                                                 <small class="{{ assignment.urgencyClass }}">
                                                     <i class="bi bi-calendar"></i>
@@ -114,12 +116,10 @@
                                                 </small>
                                             </div>
                                             <div class="d-flex gap-2">
-                                                <a href="{{ path('app_assignment_show', {id: assignment.id}) }}"
-                                                   class="btn btn-sm btn-outline-info">
+                                                <a href="{{ path('app_assignment_show', {id: assignment.id}) }}" class="btn btn-sm btn-outline-primary">
                                                     <i class="bi bi-eye"></i>
                                                 </a>
-                                                <a href="{{ path('app_assignment_edit', {id: assignment.id}) }}"
-                                                   class="btn btn-sm btn-outline-primary">
+                                                <a href="{{ path('app_assignment_edit', {id: assignment.id}) }}" class="btn btn-sm" style="background: linear-gradient(135deg, var(--accent), var(--beige)); color: white; border: none;">
                                                     <i class="bi bi-pencil"></i>
                                                 </a>
                                             </div>
@@ -131,55 +131,58 @@
                     </div>
                 </div>
 
-                {# Statistiques #}
+                {# ============================================
+                   📊 STATISTIQUES
+                   ============================================ #}
                 <div class="row g-3 mb-3">
                     <div class="col-md-4">
-                        <div class="card">
-                            <div class="card-body text-center">
-                                <h3 class="mb-0">{{ course.assignments|length }}</h3>
-                                <small class="text-muted">Total travaux</small>
+                        <div class="card text-center">
+                            <div class="card-body">
+                                <h3 class="mb-0 text-white">{{ course.assignments|length }}</h3>
+                                <small class="text-white-50">Total travaux</small>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-4">
-                        <div class="card">
-                            <div class="card-body text-center">
-                                <h3 class="mb-0 text-warning">
+                        <div class="card text-center">
+                            <div class="card-body">
+                                <h3 class="mb-0" style="color: var(--warning);">
                                     {{ course.assignments|filter(a => a.status.value == 'in_progress')|length }}
                                 </h3>
-                                <small class="text-muted">En cours</small>
+                                <small class="text-white-50">En cours</small>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-4">
-                        <div class="card">
-                            <div class="card-body text-center">
-                                <h3 class="mb-0 text-success">
+                        <div class="card text-center">
+                            <div class="card-body">
+                                <h3 class="mb-0" style="color: var(--success);">
                                     {{ course.assignments|filter(a => a.status.value == 'completed')|length }}
                                 </h3>
-                                <small class="text-muted">Terminés</small>
+                                <small class="text-white-50">Terminés</small>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                {# Actions #}
+                {# ============================================
+                   ⚡ ACTIONS
+                   ============================================ #}
                 <div class="card shadow-sm">
-                    <div class="card-header bg-white">
-                        <h6 class="mb-0">
-                            <i class="bi bi-lightning-charge"></i> Actions
+                    <div class="card-header">
+                        <h6 class="mb-0 text-white">
+                            <i class="bi bi-lightning-charge" style="color: var(--accent);"></i> Actions
                         </h6>
                     </div>
                     <div class="card-body">
-                        <div class="d-flex gap-2">
+                        <div class="d-flex gap-2 flex-wrap">
                             <a href="{{ path('app_assignment_new') }}" class="btn btn-primary">
                                 <i class="bi bi-plus-circle"></i> Ajouter un travail
                             </a>
                             <a href="{{ path('app_course_edit', {id: course.id}) }}" class="btn btn-outline-primary">
                                 <i class="bi bi-pencil"></i> Modifier la matière
                             </a>
-                            <button type="button" class="btn btn-outline-danger ms-auto"
-                                    data-bs-toggle="modal" data-bs-target="#deleteModal">
+                            <button type="button" class="btn btn-outline-danger ms-auto" data-bs-toggle="modal" data-bs-target="#deleteModal">
                                 <i class="bi bi-trash"></i> Supprimer
                             </button>
                         </div>
@@ -188,8 +191,8 @@
 
                 {# Métadonnées #}
                 <div class="card shadow-sm mt-3">
-                    <div class="card-body bg-light">
-                        <small class="text-muted">
+                    <div class="card-body" style="background: rgba(134, 87, 73, 0.2);">
+                        <small class="text-white-50">
                             <i class="bi bi-info-circle"></i>
                             <strong>Créée le :</strong> {{ course.createdAt|date('d/m/Y à H:i') }}
                         </small>
@@ -199,27 +202,26 @@
         </div>
     </div>
 
-    {# Modal de confirmation de suppression #}
+    {# ============================================
+       🗑️ MODAL DE SUPPRESSION
+       ============================================ #}
     <div class="modal fade" id="deleteModal" tabindex="-1">
         <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header bg-danger text-white">
-                    <h5 class="modal-title">
+            <div class="modal-content" style="background: var(--dark); border: 1px solid var(--accent);">
+                <div class="modal-header" style="background: linear-gradient(135deg, var(--danger), #8B3A32); border-bottom: 1px solid rgba(192, 135, 106, 0.3);">
+                    <h5 class="modal-title text-white">
                         <i class="bi bi-exclamation-triangle-fill"></i> Confirmer la suppression
                     </h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <p class="mb-2">Êtes-vous sûr de vouloir supprimer cette matière ?</p>
-                    <p class="text-danger small mb-0">
-                        <strong>⚠️ Attention :</strong> Tous les travaux associés ({{ course.assignments|length }})
-                        seront également supprimés de manière définitive.
+                    <p class="mb-2 text-white">Êtes-vous sûr de vouloir supprimer cette matière ?</p>
+                    <p class="small mb-0" style="color: var(--danger);">
+                        <strong>⚠️ Attention :</strong> Tous les travaux associés ({{ course.assignments|length }}) seront également supprimés de manière définitive.
                     </p>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                        Annuler
-                    </button>
+                <div class="modal-footer" style="border-top: 1px solid rgba(192, 135, 106, 0.3);">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
                     <form method="post" action="{{ path('app_course_delete', {id: course.id}) }}" class="d-inline">
                         <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ course.id) }}">
                         <button type="submit" class="btn btn-danger">

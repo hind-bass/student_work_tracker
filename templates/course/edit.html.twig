@@ -1,4 +1,4 @@
-{# templates/course/edit.html.twig #}
+{# templates/course/edit.html.twig - VERSION MODERNE #}
 {% extends 'base.html.twig' %}
 
 {% block title %}Modifier {{ course.name }} - {{ parent() }}{% endblock %}
@@ -6,50 +6,59 @@
 {% block body %}
     <div class="container py-4">
         <div class="row justify-content-center">
-            <div class="col-lg-7">
-                {# En-tête #}
+            <div class="col-lg-8">
+                {# ============================================
+                   ✏️ EN-TÊTE
+                   ============================================ #}
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <div>
-                        <h1 class="h3 mb-1">
-                            <i class="bi bi-pencil-square me-2"></i> Modifier la matière
+                        <h1 class="h3 mb-1 text-white">
+                            <i class="bi bi-pencil-square me-2" style="color: var(--accent);"></i>
+                            Modifier la matière
                         </h1>
-                        <p class="text-muted mb-0">{{ course.name }}</p>
+                        <p class="text-white-50 mb-0">{{ course.name }}</p>
                     </div>
                     <div>
-                        <a href="{{ path('app_course_show', {id: course.id}) }}"
-                           class="btn btn-outline-info me-2">
+                        <a href="{{ path('app_course_show', {id: course.id}) }}" class="btn btn-outline-primary me-2">
                             <i class="bi bi-eye me-1"></i> Voir
                         </a>
-                        <a href="{{ path('app_course_index') }}"
-                           class="btn btn-outline-secondary">
+                        <a href="{{ path('app_course_index') }}" class="btn btn-outline-secondary">
                             <i class="bi bi-arrow-left me-1"></i> Retour
                         </a>
                     </div>
                 </div>
 
-                {# Formulaire #}
+                {# ============================================
+                   📝 FORMULAIRE
+                   ============================================ #}
                 <div class="card shadow-sm">
                     <div class="card-body p-4">
                         {{ form_start(form) }}
 
                         {# Nom #}
                         <div class="mb-4">
-                            {{ form_row(form.name) }}
+                            {{ form_label(form.name, null, {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(form.name) }}
+                            <div class="text-danger small">{{ form_errors(form.name) }}</div>
                         </div>
 
                         {# Code #}
                         <div class="mb-4">
-                            {{ form_row(form.code) }}
+                            {{ form_label(form.code, null, {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(form.code) }}
+                            <div class="text-danger small">{{ form_errors(form.code) }}</div>
                         </div>
 
                         {# Professeur #}
                         <div class="mb-4">
-                            {{ form_row(form.professor) }}
+                            {{ form_label(form.professor, null, {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(form.professor) }}
+                            <div class="text-danger small">{{ form_errors(form.professor) }}</div>
                         </div>
 
                         {# Couleur avec prévisualisation #}
                         <div class="mb-4">
-                            {{ form_label(form.color) }}
+                            {{ form_label(form.color, 'Couleur d\'identification', {'label_attr': {'class': 'form-label'}}) }}
                             <div class="d-flex align-items-center gap-3">
                                 {{ form_widget(form.color, {
                                     'attr': {
@@ -59,43 +68,45 @@
                                     }
                                 }) }}
                                 <div class="flex-grow-1">
-                                    <div id="colorPreview"
-                                         class="rounded p-3 text-white text-center fw-bold"
-                                         style="background-color: {{ course.color }}">
+                                    <div id="colorPreview" class="rounded p-3 text-white text-center fw-bold" style="background-color: {{ course.color }}; border: 2px solid rgba(255,255,255,0.2);">
                                         Prévisualisation de la couleur
                                     </div>
                                 </div>
                             </div>
-                            {{ form_help(form.color) }}
-                            {{ form_errors(form.color) }}
+                            <div class="text-danger small">{{ form_errors(form.color) }}</div>
                         </div>
 
                         {# Description #}
                         {% if form.description is defined %}
                             <div class="mb-4">
-                                {{ form_row(form.description) }}
+                                {{ form_label(form.description, null, {'label_attr': {'class': 'form-label'}}) }}
+                                {{ form_widget(form.description) }}
+                                <div class="text-danger small">{{ form_errors(form.description) }}</div>
                             </div>
                         {% endif %}
 
-                        {# Ligne : Crédits et Semestre #}
+                        {# Crédits et Semestre #}
                         <div class="row">
                             {% if form.credits is defined %}
                                 <div class="col-md-6 mb-4">
-                                    {{ form_row(form.credits) }}
+                                    {{ form_label(form.credits, null, {'label_attr': {'class': 'form-label'}}) }}
+                                    {{ form_widget(form.credits) }}
+                                    <div class="text-danger small">{{ form_errors(form.credits) }}</div>
                                 </div>
                             {% endif %}
 
                             {% if form.semester is defined %}
                                 <div class="col-md-6 mb-4">
-                                    {{ form_row(form.semester) }}
+                                    {{ form_label(form.semester, null, {'label_attr': {'class': 'form-label'}}) }}
+                                    {{ form_widget(form.semester) }}
+                                    <div class="text-danger small">{{ form_errors(form.semester) }}</div>
                                 </div>
                             {% endif %}
                         </div>
 
                         {# Boutons #}
                         <div class="d-flex justify-content-between align-items-center">
-                            <a href="{{ path('app_course_show', {id: course.id}) }}"
-                               class="btn btn-outline-secondary">
+                            <a href="{{ path('app_course_show', {id: course.id}) }}" class="btn btn-outline-secondary">
                                 <i class="bi bi-x-circle me-1"></i> Annuler
                             </a>
                             <button type="submit" class="btn btn-primary btn-lg px-5">
@@ -107,51 +118,40 @@
                     </div>
                 </div>
 
-                {# Informations #}
+                {# ============================================
+                   ℹ️ INFORMATIONS
+                   ============================================ #}
                 <div class="card mt-3">
-                    <div class="card-body bg-light">
-                        <small class="text-muted">
+                    <div class="card-body" style="background: rgba(134, 87, 73, 0.2);">
+                        <small class="text-white-50">
                             <i class="bi bi-info-circle me-1"></i>
                             <strong>Travaux associés :</strong> {{ course.assignmentsCount }}
                             <span class="ms-3">
-                            <i class="bi bi-clock-history me-1"></i>
-                            <strong>Créée le :</strong> {{ course.createdAt|date('d/m/Y') }}
-                        </span>
+                                <i class="bi bi-clock-history me-1"></i>
+                                <strong>Créée le :</strong> {{ course.createdAt|date('d/m/Y') }}
+                            </span>
                         </small>
                     </div>
                 </div>
 
-                {# Suggestions de couleurs #}
+                {# ============================================
+                   🎨 SUGGESTIONS DE COULEURS
+                   ============================================ #}
                 <div class="card mt-3">
                     <div class="card-body">
-                        <h6 class="mb-3">
-                            <i class="bi bi-palette me-2"></i> Changer rapidement la couleur
+                        <h6 class="mb-3 text-white">
+                            <i class="bi bi-palette me-2" style="color: var(--accent);"></i>
+                            Changer rapidement la couleur
                         </h6>
                         <div class="d-flex gap-2 flex-wrap">
-                            <button type="button" class="btn btn-sm"
-                                    style="background-color: #0d6efd; width: 50px; height: 50px; border-radius: 8px;"
-                                    onclick="setColor('#0d6efd')" title="Bleu"></button>
-                            <button type="button" class="btn btn-sm"
-                                    style="background-color: #198754; width: 50px; height: 50px; border-radius: 8px;"
-                                    onclick="setColor('#198754')" title="Vert"></button>
-                            <button type="button" class="btn btn-sm"
-                                    style="background-color: #dc3545; width: 50px; height: 50px; border-radius: 8px;"
-                                    onclick="setColor('#dc3545')" title="Rouge"></button>
-                            <button type="button" class="btn btn-sm"
-                                    style="background-color: #ffc107; width: 50px; height: 50px; border-radius: 8px;"
-                                    onclick="setColor('#ffc107')" title="Jaune"></button>
-                            <button type="button" class="btn btn-sm"
-                                    style="background-color: #6f42c1; width: 50px; height: 50px; border-radius: 8px;"
-                                    onclick="setColor('#6f42c1')" title="Violet"></button>
-                            <button type="button" class="btn btn-sm"
-                                    style="background-color: #fd7e14; width: 50px; height: 50px; border-radius: 8px;"
-                                    onclick="setColor('#fd7e14')" title="Orange"></button>
-                            <button type="button" class="btn btn-sm"
-                                    style="background-color: #20c997; width: 50px; height: 50px; border-radius: 8px;"
-                                    onclick="setColor('#20c997')" title="Cyan"></button>
-                            <button type="button" class="btn btn-sm"
-                                    style="background-color: #d63384; width: 50px; height: 50px; border-radius: 8px;"
-                                    onclick="setColor('#d63384')" title="Rose"></button>
+                            <button type="button" class="btn btn-sm" style="background-color: #865749; width: 50px; height: 50px; border-radius: 12px; border: 2px solid rgba(255,255,255,0.2);" onclick="setColor('#865749')" title="Brun terracotta"></button>
+                            <button type="button" class="btn btn-sm" style="background-color: #C0876A; width: 50px; height: 50px; border-radius: 12px; border: 2px solid rgba(255,255,255,0.2);" onclick="setColor('#C0876A')" title="Beige rosé"></button>
+                            <button type="button" class="btn btn-sm" style="background-color: #A76048; width: 50px; height: 50px; border-radius: 12px; border: 2px solid rgba(255,255,255,0.2);" onclick="setColor('#A76048')" title="Terracotta"></button>
+                            <button type="button" class="btn btn-sm" style="background-color: #6B9080; width: 50px; height: 50px; border-radius: 12px; border: 2px solid rgba(255,255,255,0.2);" onclick="setColor('#6B9080')" title="Vert sauge"></button>
+                            <button type="button" class="btn btn-sm" style="background-color: #D4A574; width: 50px; height: 50px; border-radius: 12px; border: 2px solid rgba(255,255,255,0.2);" onclick="setColor('#D4A574')" title="Or chaud"></button>
+                            <button type="button" class="btn btn-sm" style="background-color: #B85042; width: 50px; height: 50px; border-radius: 12px; border: 2px solid rgba(255,255,255,0.2);" onclick="setColor('#B85042')" title="Rouge terre"></button>
+                            <button type="button" class="btn btn-sm" style="background-color: #958377; width: 50px; height: 50px; border-radius: 12px; border: 2px solid rgba(255,255,255,0.2);" onclick="setColor('#958377')" title="Gris taupe"></button>
+                            <button type="button" class="btn btn-sm" style="background-color: #473D43; width: 50px; height: 50px; border-radius: 12px; border: 2px solid rgba(255,255,255,0.2);" onclick="setColor('#473D43')" title="Brun foncé"></button>
                         </div>
                     </div>
                 </div>
